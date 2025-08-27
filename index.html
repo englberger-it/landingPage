@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="title">Ihre erfahrenen Partner für maßgeschneiderte Softwareentwicklung</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles & Configuration -->
+    <style>
+        :root {
+            /* Default Theme: Innovativ-Erdig */
+            --bg-color: #FDF8F3;
+            --bg-color-rgb: 253, 248, 243;
+            --primary-color: #2C3E50;
+            --primary-color-rgb: 44, 62, 80;
+            --accent-color: #CC5500;
+            --accent-color-rgb: 204, 85, 0;
+            --card-bg-color: rgba(255, 255, 255, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        #canvas-container {
+            position: fixed;
+            top: 10rem;
+            left: 8rem;
+            width: 100%;
+            height: 100vh;
+            z-index: 1;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+        .text-primary { color: var(--primary-color); }
+        .text-primary-muted { color: rgba(var(--primary-color-rgb), 0.8); }
+        .text-primary-light { color: rgba(var(--primary-color-rgb), 0.6); }
+        .accent-color { color: var(--accent-color); }
+        .bg-accent { background-color: var(--accent-color); }
+        .bg-accent-light { background-color: rgba(var(--accent-color-rgb), 0.1); }
+        .border-accent { border-color: var(--accent-color); }
+        .card-bg { background-color: var(--card-bg-color); }
+        .section-bg { background-color: rgba(var(--primary-color-rgb), 0.03); }
+
+        .cta-button {
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -10px rgba(var(--accent-color-rgb), 0.4);
+        }
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; 
+            align-items: flex-start; 
+            position: relative;
+            z-index: 2;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            padding-top: 6.25vw; /* Golden Ratio: 10vw / 1.6 = 6.25vw */
+            padding-left: 10vw; 
+            max-width: 45%; 
+        }
+        main {
+            background-color: rgba(var(--bg-color-rgb), 0.8);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            transition: background-color 0.5s ease;
+        }
+        .theme-button {
+            display: flex;
+            gap: 4px;
+            padding: 5px;
+            border: 2px solid transparent;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        .theme-button.active {
+            border-color: var(--accent-color);
+        }
+        .theme-button .color-swatch {
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 50%;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .lang-switch button {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            transition: all 0.2s ease;
+        }
+        .lang-switch button.active {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+        }
+    </style>
+</head>
+<body class="antialiased">
+    
+    <div id="canvas-container"></div>
+
+    <div class="content-wrapper">
+        <!-- Header mit Theme Switcher -->
+        <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
+            <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+                <div class="font-bold text-lg text-primary" data-i18n="nav.agency">Ihre Agentur</div>
+                <div class="flex items-center space-x-2 md:space-x-4">
+                    <div class="lang-switch flex items-center space-x-1 bg-gray-200/50 p-1 rounded-full">
+                        <button id="lang-de">DE</button>
+                        <button id="lang-en">EN</button>
+                    </div>
+                    <span class="text-sm font-semibold text-primary-muted hidden md:inline" data-i18n="nav.theme">Theme wählen:</span>
+                    <div id="theme-switcher" class="flex items-center space-x-1 md:space-x-2 flex-wrap">
+                        <button class="theme-button" data-theme="innovativ-erdig" title="Innovativ-Erdig: Stabil, komfortabel, modern.">
+                            <span class="color-swatch" style="background-color: #FDF8F3;"></span>
+                            <span class="color-swatch" style="background-color: #2C3E50;"></span>
+                            <span class="color-swatch" style="background-color: #CC5500;"></span>
+                        </button>
+                        <button class="theme-button" data-theme="vertrauensvoll-warm" title="Vertrauensvoll-Warm: Seriös, reif, optimistisch.">
+                            <span class="color-swatch" style="background-color: #EAE7DD;"></span>
+                            <span class="color-swatch" style="background-color: #262223;"></span>
+                            <span class="color-swatch" style="background-color: #E1AD01;"></span>
+                        </button>
+                        <button class="theme-button" data-theme="professionell-kreativ" title="Professionell-Kreativ: Anspruchsvoll, beständig, menschlich.">
+                            <span class="color-swatch" style="background-color: #DCE1E3;"></span>
+                            <span class="color-swatch" style="background-color: #591C0B;"></span>
+                            <span class="color-swatch" style="background-color: #FF7A59;"></span>
+                        </button>
+                        <button class="theme-button" data-theme="klassisch-vertrauensvoll" title="Klassisch-Vertrauensvoll: Sicher, professionell, klar.">
+                            <span class="color-swatch" style="background-color: #F4F7FA;"></span>
+                            <span class="color-swatch" style="background-color: #1C3D5A;"></span>
+                            <span class="color-swatch" style="background-color: #007BFF;"></span>
+                        </button>
+                        <button class="theme-button" data-theme="elegant-fokussiert" title="Elegant-Fokussiert: Modern, seriös, anspruchsvoll.">
+                            <span class="color-swatch" style="background-color: #F5F5F5;"></span>
+                            <span class="color-swatch" style="background-color: #005F6B;"></span>
+                            <span class="color-swatch" style="background-color: #C5A880;"></span>
+                        </button>
+                        <button class="theme-button" data-theme="ruhig-klar" title="Ruhig & Klar: Frisch, modern, vertrauensvoll.">
+                            <span class="color-swatch" style="background-color: #F7F9F9;"></span>
+                            <span class="color-swatch" style="background-color: #2A3F54;"></span>
+                            <span class="color-swatch" style="background-color: #53b5a3;"></span>
+                        </button>
+                        <button class="theme-button" data-theme="kreativ-mutig" title="Kreativ & Mutig: Energiegeladen, innovativ, selbstbewusst.">
+                            <span class="color-swatch" style="background-color: #F5F5F7;"></span>
+                            <span class="color-swatch" style="background-color: #212121;"></span>
+                            <span class="color-swatch" style="background-color: #BB0099;"></span>
+                        </button>
+                        <button class="theme-button" data-theme="natuerlich-stabil" title="Natürlich & Stabil: Geerdet, wachstumsorientiert, nachhaltig.">
+                            <span class="color-swatch" style="background-color: #FCFBF8;"></span>
+                            <span class="color-swatch" style="background-color: #566A53;"></span>
+                            <span class="color-swatch" style="background-color: #D4B996;"></span>
+                        </button>
+                        <button class="theme-button" data-theme="klar-fokussiert" title="Klar & Fokussiert: Seriös, modern, zielgerichtet.">
+                            <span class="color-swatch" style="background-color: #F7F9F9;"></span>
+                            <span class="color-swatch" style="background-color: #2A3F54;"></span>
+                            <span class="color-swatch" style="background-color: #2E8B9A;"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sektion 1: Hero -->
+        <header class="hero-section">
+            <div class="hero-content container mx-auto px-6 text-left">
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 text-black">
+                    <span data-i18n="hero.h1.line1">Maßgeschneiderte Software, die Ihr Geschäft voranbringt.</span> <br class="hidden md:block">
+                    <span class="accent-color" data-i18n="hero.h1.line2">Ein Partner, auf den Sie sich verlassen können.</span>
+                </h1>
+                <p class="text-lg md:text-xl max-w-xl mx-0 mb-8 text-black" data-i18n="hero.p">
+                    Wir kombinieren innovative Technologie mit transparenten Prozessen, um robuste und skalierbare Softwarelösungen zu entwickeln, die exakt auf Ihre Bedürfnisse zugeschnitten sind.
+                </p>
+                <a href="#kontakt" class="bg-accent text-white font-bold py-4 px-10 rounded-lg text-lg cta-button" data-i18n="hero.cta">
+                    Jetzt Erstgespräch vereinbaren
+                </a>
+            </div>
+        </header>
+
+        <main>
+            <!-- Sektion 2: Ihr Projekterfolg, planbar und sicher -->
+            <section id="problem" class="py-20 md:py-32 section-fade-in">
+                <div class="container mx-auto px-6 text-center">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="problem.h2">Ihr Projekterfolg, planbar und sicher.</h2>
+                    <p class="text-lg text-primary-muted max-w-3xl mx-auto mb-16" data-i18n="problem.p">Wir verwandeln die typischen Unsicherheiten der Softwareentwicklung in klare Garantien für Sie.</p>
+                    <div class="grid md:grid-cols-3 gap-8 text-left">
+                        <div class="card-bg p-8 rounded-xl shadow-sm">
+                            <h3 class="text-xl font-bold mb-3" data-i18n="problem.card1.h3">Absolute Budgettreue</h3>
+                            <p class="text-primary-muted" data-i18n="problem.card1.p">Durch detaillierte Planung und transparente Fortschrittsberichte stellen wir sicher, dass Ihr Projekt im vereinbarten Budgetrahmen bleibt. Für Ihre volle Planungssicherheit.</p>
+                        </div>
+                        <div class="card-bg p-8 rounded-xl shadow-sm">
+                            <h3 class="text-xl font-bold mb-3" data-i18n="problem.card2.h3">Zuverlässige Termineinhaltung</h3>
+                            <p class="text-primary-muted" data-i18n="problem.card2.p">Unsere agilen Prozesse und proaktive Kommunikation garantieren, dass wir Meilensteine zuverlässig erreichen. Wir liefern pünktlich, damit Sie sicher planen können.</p>
+                        </div>
+                        <div class="card-bg p-8 rounded-xl shadow-sm">
+                            <h3 class="text-xl font-bold mb-3" data-i18n="problem.card3.h3">Transparente Partnerschaft</h3>
+                            <p class="text-primary-muted" data-i18n="problem.card3.p">Sie haben einen festen Ansprechpartner und erhalten regelmäßige, verständliche Updates. Wir schaffen eine vertrauensvolle Atmosphäre durch proaktive und klare Kommunikation.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Sektion 3: Unsere Lösungen -->
+            <section id="loesungen" class="py-20 md:py-32 section-bg section-fade-in">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="solutions.h2">Unsere Expertise für Ihren Erfolg.</h2>
+                        <p class="text-lg text-primary-muted max-w-3xl mx-auto" data-i18n="solutions.p">Wir entwickeln nicht nur Software – wir schaffen digitale Lösungen, die echte Geschäftsergebnisse liefern.</p>
+                    </div>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200/50 transform hover:-translate-y-2 transition-transform duration-300">
+                            <h3 class="text-xl font-bold mb-3" data-i18n="solutions.card1.h3">Individuelle Webanwendungen</h3>
+                            <p class="text-primary-muted" data-i18n="solutions.card1.p">...die Ihre Nutzer begeistern und komplexe Geschäftsprozesse optimieren. Skalierbar, sicher und perfekt auf Ihre Marke zugeschnitten.</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200/50 transform hover:-translate-y-2 transition-transform duration-300">
+                            <h3 class="text-xl font-bold mb-3" data-i18n="solutions.card2.h3">Mobile App-Entwicklung</h3>
+                            <p class="text-primary-muted" data-i18n="solutions.card2.p">...die auf iOS und Android überzeugen. Wir begleiten Sie von der Idee bis zum Launch im App Store und darüber hinaus.</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200/50 transform hover:-translate-y-2 transition-transform duration-300">
+                            <h3 class="text-xl font-bold mb-3" data-i18n="solutions.card3.h3">Cloud & DevOps</h3>
+                            <p class="text-primary-muted" data-i18n="solutions.card3.p">...für eine robuste und skalierbare Infrastruktur. Wir sorgen dafür, dass Ihre Anwendung zuverlässig läuft und mit Ihrem Erfolg wächst.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sektion 4: Zwei erfahrene Entwickler. Eine Mission. -->
+            <section id="vertrauen" class="py-20 md:py-32 section-fade-in">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="about.h2">Zwei erfahrene Entwickler. Eine Mission.</h2>
+                        <p class="text-lg text-primary-muted max-w-3xl mx-auto" data-i18n="about.p">Wir bündeln unsere langjährige Expertise, um Ihr Projekt mit höchster Qualität und persönlichem Engagement zum Erfolg zu führen.</p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8 md:gap-12 max-w-4xl mx-auto">
+                        <div class="card-bg p-8 rounded-xl shadow-sm text-center">
+                            <img src="https://placehold.co/120x120/EAE7DD/2C3E50?text=Foto" alt="Foto von Entwickler 1" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md">
+                            <h3 class="text-2xl font-bold" data-i18n="about.dev1.name">Max Mustermann</h3>
+                            <p class="font-semibold accent-color mb-2" data-i18n="about.dev1.role">Gründer & Lead-Entwickler</p>
+                            <p class="text-primary-muted" data-i18n="about.dev1.desc">Mit über 10 Jahren Erfahrung in der Entwicklung komplexer Enterprise-Anwendungen sorge ich für eine stabile, skalierbare und sichere Architektur als Fundament Ihres Projekts.</p>
+                        </div>
+                        <div class="card-bg p-8 rounded-xl shadow-sm text-center">
+                            <img src="https://placehold.co/120x120/EAE7DD/2C3E50?text=Foto" alt="Foto von Entwickler 2" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md">
+                            <h3 class="text-2xl font-bold" data-i18n="about.dev2.name">Erika Mustermann</h3>
+                            <p class="font-semibold accent-color mb-2" data-i18n="about.dev2.role">Gründerin & UI/UX-Spezialistin</p>
+                            <p class="text-primary-muted" data-i18n="about.dev2.desc">Meine Leidenschaft ist die Schnittstelle zwischen Mensch und Maschine. Ich sorge dafür, dass Ihre Software nicht nur funktioniert, sondern auch intuitiv bedienbar ist und Ihre Nutzer begeistert.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sektion 5: Unser Prozess -->
+            <section id="prozess" class="py-20 md:py-32 section-bg section-fade-in">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="process.h2">Ein klarer Weg von der Idee zum fertigen Produkt.</h2>
+                        <p class="text-lg text-primary-muted max-w-3xl mx-auto" data-i18n="process.p">Unser bewährter Prozess sorgt für Transparenz und Planbarkeit in jeder Phase Ihres Projekts.</p>
+                    </div>
+                    <div class="relative">
+                        <div class="hidden md:block absolute top-5 left-1/2 w-0.5 h-full bg-gray-300/70 -translate-x-1/2"></div>
+                        <div class="space-y-12 md:space-y-0">
+                            <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative"><div class="md:text-right md:pr-8"><div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2 md:ml-auto">1</div><h3 class="text-xl font-bold" data-i18n="process.step1.h3">Discovery & Strategie</h3><p class="text-primary-muted" data-i18n="process.step1.p">Wir tauchen tief in Ihr Geschäftsmodell ein, um Ihre Ziele und Herausforderungen vollständig zu verstehen.</p></div><div class="hidden md:block"></div></div>
+                            <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative"><div class="hidden md:block"></div><div class="md:pl-8"><div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2">2</div><h3 class="text-xl font-bold" data-i18n="process.step2.h3">Design & Prototyping</h3><p class="text-primary-muted" data-i18n="process.step2.p">Wir erstellen intuitive User Interfaces und interaktive Prototypen, damit Sie die Software erleben können, bevor eine Zeile Code geschrieben wird.</p></div></div>
+                            <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative"><div class="md:text-right md:pr-8"><div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2 md:ml-auto">3</div><h3 class="text-xl font-bold" data-i18n="process.step3.h3">Agile Entwicklung</h3><p class="text-primary-muted" data-i18n="process.step3.p">In zweiwöchigen Sprints entwickeln wir Ihre Software. Regelmäßige Demos halten Sie immer auf dem neuesten Stand.</p></div></div>
+                            <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative"><div class="hidden md:block"></div><div class="md:pl-8"><div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2">4</div><h3 class="text-xl font-bold" data-i18n="process.step4.h3">Testing & Launch</h3><p class="text-primary-muted" data-i18n="process.step4.p">Umfassende Qualitätssicherung stellt sicher, dass Ihr Produkt fehlerfrei ist. Wir begleiten den Launch und sorgen für einen reibungslosen Start.</p></div></div>
+                            <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative"><div class="md:text-right md:pr-8"><div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2 md:ml-auto">5</div><h3 class="text-xl font-bold" data-i18n="process.step5.h3">Support & Skalierung</h3><p class="text-primary-muted" data-i18n="process.step5.p">Auch nach dem Launch sind wir für Sie da. Wir warten die Software, unterstützen Ihre Nutzer und entwickeln sie strategisch weiter.</p></div></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sektion 6: Finaler CTA -->
+            <section id="kontakt" class="py-20 md:py-32 section-fade-in">
+                <div class="container mx-auto px-6 text-center">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="contact.h2">Sind Sie bereit, Ihr Projekt auf eine solide Basis zu stellen?</h2>
+                    <p class="text-lg text-primary-muted max-w-2xl mx-auto mb-8" data-i18n="contact.p">Lassen Sie uns in einem unverbindlichen Gespräch herausfinden, wie wir Sie unterstützen können. Wir freuen uns darauf, von Ihrer Idee zu hören.</p>
+                    <a href="mailto:hallo@ihredomain.de" class="bg-accent text-white font-bold py-4 px-10 rounded-lg text-lg mx-auto cta-button" data-i18n="contact.cta">
+                        Lassen Sie uns über Ihr Projekt sprechen
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-primary text-white">
+            <div class="container mx-auto px-6 py-8 text-center text-sm">
+                <p data-i18n="footer.copyright">&copy; 2024 Ihre Firma GmbH. Alle Rechte vorbehalten.</p>
+                <nav class="flex justify-center space-x-4 mt-4">
+                    <a href="#" class="hover:underline" data-i18n="footer.imprint">Impressum</a>
+                    <a href="#" class="hover:underline" data-i18n="footer.privacy">Datenschutz</a>
+                </nav>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- 3D Scene Setup ---
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            camera.position.z = 5;
+
+            // --- Materials ---
+            let pointsMaterial = new THREE.PointsMaterial({ size: 0.03, vertexColors: true });
+            let linesMaterial = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.1 });
+
+            // --- Objects ---
+            const group = new THREE.Group();
+            group.position.x = 1.8; // Move group to the right
+            scene.add(group);
+
+            const primaryColor = new THREE.Color();
+            const accentColor = new THREE.Color();
+
+            // --- Core Network ---
+            const coreGroup = new THREE.Group();
+            const corePoints = [];
+            const corePositions = [];
+            const coreOriginalColors = [];
+            const coreNumPoints = 100;
+
+            for (let i = 0; i < coreNumPoints; i++) {
+                const phi = Math.acos(-1 + (2 * i) / coreNumPoints);
+                const theta = Math.sqrt(coreNumPoints * Math.PI) * phi;
+                const point = new THREE.Vector3().setFromSphericalCoords(0.8, phi, theta);
+                corePoints.push(point);
+                corePositions.push(point.x, point.y, point.z);
+                coreOriginalColors.push(new THREE.Color());
+            }
+
+            const corePointsGeometry = new THREE.BufferGeometry();
+            corePointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(corePositions, 3));
+            corePointsGeometry.setAttribute('color', new THREE.Float32BufferAttribute(coreNumPoints * 3, 3));
+            const corePointsObject = new THREE.Points(corePointsGeometry, pointsMaterial);
+            coreGroup.add(corePointsObject);
+            
+            const coreLinesGeometry = new THREE.BufferGeometry();
+            const coreLinePositions = [];
+            for (let i = 0; i < coreNumPoints; i++) {
+                for (let j = i + 1; j < coreNumPoints; j++) {
+                    if (corePoints[i].distanceTo(corePoints[j]) < 0.5) {
+                        coreLinePositions.push(corePoints[i].x, corePoints[i].y, corePoints[i].z);
+                        coreLinePositions.push(corePoints[j].x, corePoints[j].y, corePoints[j].z);
+                    }
+                }
+            }
+            coreLinesGeometry.setAttribute('position', new THREE.Float32BufferAttribute(coreLinePositions, 3));
+            const coreLinesObject = new THREE.LineSegments(coreLinesGeometry, linesMaterial);
+            coreGroup.add(coreLinesObject);
+
+            group.add(coreGroup);
+            
+            // --- Orbital Networks ---
+            const orbitalGroup = new THREE.Group();
+            group.add(orbitalGroup);
+            const orbitalPoints = [];
+            const orbitalPositions = [];
+            const orbitalOriginalColors = [];
+
+            function createTorusPoints(count, majorRadius, minorRadius, rotation) {
+                const torusPoints = [];
+                for (let i = 0; i < count; i++) {
+                    const u = Math.random() * Math.PI * 2;
+                    const v = Math.random() * Math.PI * 2;
+                    const x = (majorRadius + minorRadius * Math.cos(v)) * Math.cos(u);
+                    const y = (majorRadius + minorRadius * Math.cos(v)) * Math.sin(u);
+                    const z = minorRadius * Math.sin(v);
+                    const point = new THREE.Vector3(x, y, z).applyEuler(rotation);
+                    torusPoints.push(point);
+                }
+                return torusPoints;
+            }
+
+            const ring1Points = createTorusPoints(150, 2, 0.5, new THREE.Euler(Math.PI / 2, 0, 0));
+            const ring2Points = createTorusPoints(150, 2.2, 0.5, new THREE.Euler(0, Math.PI / 3, 0));
+            [...ring1Points, ...ring2Points].forEach(point => {
+                orbitalPositions.push(point.x, point.y, point.z);
+                orbitalPoints.push(point);
+                orbitalOriginalColors.push(new THREE.Color());
+            });
+
+            const orbitalPointsGeometry = new THREE.BufferGeometry();
+            orbitalPointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(orbitalPositions, 3));
+            orbitalPointsGeometry.setAttribute('color', new THREE.Float32BufferAttribute(orbitalPoints.length * 3, 3));
+            const orbitalPointsObject = new THREE.Points(orbitalPointsGeometry, pointsMaterial);
+            orbitalGroup.add(orbitalPointsObject);
+
+            const orbitalLinesGeometry = new THREE.BufferGeometry();
+            const orbitalLinePositions = [];
+            for (let i = 0; i < orbitalPoints.length; i++) {
+                for (let j = i + 1; j < orbitalPoints.length; j++) {
+                    if (orbitalPoints[i].distanceTo(orbitalPoints[j]) < 0.8) {
+                        orbitalLinePositions.push(orbitalPoints[i].x, orbitalPoints[i].y, orbitalPoints[i].z);
+                        orbitalLinePositions.push(orbitalPoints[j].x, orbitalPoints[j].y, orbitalPoints[j].z);
+                    }
+                }
+            }
+            orbitalLinesGeometry.setAttribute('position', new THREE.Float32BufferAttribute(orbitalLinePositions, 3));
+            const orbitalLinesObject = new THREE.LineSegments(orbitalLinesGeometry, linesMaterial);
+            orbitalGroup.add(orbitalLinesObject);
+            
+            // --- Lighting ---
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 5, 5);
+            scene.add(directionalLight);
+
+            // --- Mouse Parallax ---
+            const cursor = { x: 0, y: 0 };
+            window.addEventListener('mousemove', (event) => {
+                cursor.x = event.clientX / window.innerWidth - 0.5;
+                cursor.y = -(event.clientY / window.innerHeight - 0.5);
+            });
+
+            // --- Scroll Animation ---
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                const newZ = 5 - scrollY * 0.005;
+                gsap.to(camera.position, { z: Math.max(3.5, newZ), duration: 0.5 });
+                gsap.to(group.rotation, { y: scrollY * 0.0005, duration: 0.5 });
+            });
+
+            // --- Animation Loop ---
+            const clock = new THREE.Clock();
+            function animate() {
+                const elapsedTime = clock.getElapsedTime();
+                
+                coreGroup.rotation.y = elapsedTime * 0.1;
+                orbitalGroup.rotation.y = elapsedTime * 0.05;
+                orbitalGroup.rotation.x = elapsedTime * 0.02;
+
+                const parallaxX = cursor.x * 0.5;
+                const parallaxY = cursor.y * 0.5;
+                group.position.x += ( (1.8 + parallaxX) - group.position.x) * 0.05;
+                group.position.y += (parallaxY - group.position.y) * 0.05;
+
+                renderer.render(scene, camera);
+                requestAnimationFrame(animate);
+            }
+            animate();
+            
+            // --- Resize ---
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            });
+            
+            // --- Theme Switcher Logic ---
+            const themes = {
+                'innovativ-erdig': { '--bg-color': '#FDF8F3', '--bg-color-rgb': '253, 248, 243', '--primary-color': '#2C3E50', '--primary-color-rgb': '44, 62, 80', '--accent-color': '#CC5500', '--accent-color-rgb': '204, 85, 0', '--card-bg-color': 'rgba(255, 255, 255, 0.5)' },
+                'vertrauensvoll-warm': { '--bg-color': '#EAE7DD', '--bg-color-rgb': '234, 231, 221', '--primary-color': '#262223', '--primary-color-rgb': '38, 34, 35', '--accent-color': '#E1AD01', '--accent-color-rgb': '225, 173, 1', '--card-bg-color': 'rgba(253, 248, 243, 0.5)' },
+                'professionell-kreativ': { '--bg-color': '#DCE1E3', '--bg-color-rgb': '220, 225, 227', '--primary-color': '#591C0B', '--primary-color-rgb': '89, 28, 11', '--accent-color': '#FF7A59', '--accent-color-rgb': '255, 122, 89', '--card-bg-color': 'rgba(255, 255, 255, 0.6)' },
+                'klassisch-vertrauensvoll': { '--bg-color': '#F4F7FA', '--bg-color-rgb': '244, 247, 250', '--primary-color': '#1C3D5A', '--primary-color-rgb': '28, 61, 90', '--accent-color': '#007BFF', '--accent-color-rgb': '0, 123, 255', '--card-bg-color': 'rgba(255, 255, 255, 0.7)' },
+                'elegant-fokussiert': { '--bg-color': '#F5F5F5', '--bg-color-rgb': '245, 245, 245', '--primary-color': '#005F6B', '--primary-color-rgb': '0, 95, 107', '--accent-color': '#C5A880', '--accent-color-rgb': '197, 168, 128', '--card-bg-color': 'rgba(255, 255, 255, 0.8)' },
+                'ruhig-klar': { '--bg-color': '#F7F9F9', '--bg-color-rgb': '247, 249, 249', '--primary-color': '#2A3F54', '--primary-color-rgb': '42, 63, 84', '--accent-color': '#53b5a3', '--accent-color-rgb': '83, 181, 163', '--card-bg-color': 'rgba(255, 255, 255, 0.8)' },
+                'kreativ-mutig': { '--bg-color': '#F5F5F7', '--bg-color-rgb': '245, 245, 247', '--primary-color': '#212121', '--primary-color-rgb': '33, 33, 33', '--accent-color': '#BB0099', '--accent-color-rgb': '187, 0, 153', '--card-bg-color': 'rgba(255, 255, 255, 0.7)' },
+                'natuerlich-stabil': { '--bg-color': '#FCFBF8', '--bg-color-rgb': '252, 251, 248', '--primary-color': '#566A53', '--primary-color-rgb': '86, 106, 83', '--accent-color': '#D4B996', '--accent-color-rgb': '212, 185, 150', '--card-bg-color': 'rgba(255, 255, 255, 0.6)' },
+                'klar-fokussiert': { '--bg-color': '#F7F9F9', '--bg-color-rgb': '247, 249, 249', '--primary-color': '#2A3F54', '--primary-color-rgb': '42, 63, 84', '--accent-color': '#2E8B9A', '--accent-color-rgb': '46, 139, 154', '--card-bg-color': 'rgba(255, 255, 255, 0.8)' }
+            };
+
+            const themeSwitcher = document.getElementById('theme-switcher');
+            const buttons = themeSwitcher.querySelectorAll('.theme-button');
+            const root = document.documentElement;
+
+            function setTheme(themeName) {
+                const selectedTheme = themes[themeName];
+                for (const [key, value] of Object.entries(selectedTheme)) {
+                    root.style.setProperty(key, value);
+                }
+                
+                primaryColor.set(selectedTheme['--primary-color']);
+                accentColor.set(selectedTheme['--accent-color']);
+
+                let colors = corePointsObject.geometry.attributes.color;
+                for(let i = 0; i < corePoints.length; i++) {
+                    const color = Math.random() > 0.85 ? accentColor : primaryColor;
+                    coreOriginalColors[i].set(color);
+                    colors.setXYZ(i, color.r, color.g, color.b);
+                }
+                colors.needsUpdate = true;
+
+                colors = orbitalPointsObject.geometry.attributes.color;
+                for(let i = 0; i < orbitalPoints.length; i++) {
+                    const color = Math.random() > 0.85 ? accentColor : primaryColor;
+                    orbitalOriginalColors[i].set(color);
+                    colors.setXYZ(i, color.r, color.g, color.b);
+                }
+                colors.needsUpdate = true;
+                
+                linesMaterial.color.set(primaryColor);
+                coreLinesObject.material.color.set(primaryColor);
+
+                buttons.forEach(button => {
+                    button.classList.toggle('active', button.dataset.theme === themeName);
+                });
+            }
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => setTheme(button.dataset.theme));
+            });
+
+            setTheme('innovativ-erdig');
+
+            const sections = document.querySelectorAll('.section-fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => observer.observe(section));
+            
+            // --- i18n Logic ---
+            const translations = {
+                de: {
+                    "title": "Ihre erfahrenen Partner für maßgeschneiderte Softwareentwicklung",
+                    "nav.agency": "Ihre Agentur",
+                    "nav.theme": "Theme wählen:",
+                    "hero.h1.line1": "Maßgeschneiderte Software, die Ihr Geschäft voranbringt.",
+                    "hero.h1.line2": "Ein Partner, auf den Sie sich verlassen können.",
+                    "hero.p": "Wir kombinieren innovative Technologie mit transparenten Prozessen, um robuste und skalierbare Softwarelösungen zu entwickeln, die exakt auf Ihre Bedürfnisse zugeschnitten sind.",
+                    "hero.cta": "Jetzt Erstgespräch vereinbaren",
+                    "problem.h2": "Ihr Projekterfolg, planbar und sicher.",
+                    "problem.p": "Wir verwandeln die typischen Unsicherheiten der Softwareentwicklung in klare Garantien für Sie.",
+                    "problem.card1.h3": "Absolute Budgettreue",
+                    "problem.card1.p": "Durch detaillierte Planung und transparente Fortschrittsberichte stellen wir sicher, dass Ihr Projekt im vereinbarten Budgetrahmen bleibt. Für Ihre volle Planungssicherheit.",
+                    "problem.card2.h3": "Zuverlässige Termineinhaltung",
+                    "problem.card2.p": "Unsere agilen Prozesse und proaktive Kommunikation garantieren, dass wir Meilensteine zuverlässig erreichen. Wir liefern pünktlich, damit Sie sicher planen können.",
+                    "problem.card3.h3": "Transparente Partnerschaft",
+                    "problem.card3.p": "Sie haben einen festen Ansprechpartner und erhalten regelmäßige, verständliche Updates. Wir schaffen eine vertrauensvolle Atmosphäre durch proaktive und klare Kommunikation.",
+                    "solutions.h2": "Unsere Expertise für Ihren Erfolg.",
+                    "solutions.p": "Wir entwickeln nicht nur Software – wir schaffen digitale Lösungen, die echte Geschäftsergebnisse liefern.",
+                    "solutions.card1.h3": "Individuelle Webanwendungen",
+                    "solutions.card1.p": "...die Ihre Nutzer begeistern und komplexe Geschäftsprozesse optimieren. Skalierbar, sicher und perfekt auf Ihre Marke zugeschnitten.",
+                    "solutions.card2.h3": "Mobile App-Entwicklung",
+                    "solutions.card2.p": "...die auf iOS und Android überzeugen. Wir begleiten Sie von der Idee bis zum Launch im App Store und darüber hinaus.",
+                    "solutions.card3.h3": "Cloud & DevOps",
+                    "solutions.card3.p": "...für eine robuste und skalierbare Infrastruktur. Wir sorgen dafür, dass Ihre Anwendung zuverlässig läuft und mit Ihrem Erfolg wächst.",
+                    "about.h2": "Zwei erfahrene Entwickler. Eine Mission.",
+                    "about.p": "Wir bündeln unsere langjährige Expertise, um Ihr Projekt mit höchster Qualität und persönlichem Engagement zum Erfolg zu führen.",
+                    "about.dev1.name": "Max Mustermann",
+                    "about.dev1.role": "Gründer & Lead-Entwickler",
+                    "about.dev1.desc": "Mit über 10 Jahren Erfahrung in der Entwicklung komplexer Enterprise-Anwendungen sorge ich für eine stabile, skalierbare und sichere Architektur als Fundament Ihres Projekts.",
+                    "about.dev2.name": "Erika Mustermann",
+                    "about.dev2.role": "Gründerin & UI/UX-Spezialistin",
+                    "about.dev2.desc": "Meine Leidenschaft ist die Schnittstelle zwischen Mensch und Maschine. Ich sorge dafür, dass Ihre Software nicht nur funktioniert, sondern auch intuitiv bedienbar ist und Ihre Nutzer begeistert.",
+                    "process.h2": "Ein klarer Weg von der Idee zum fertigen Produkt.",
+                    "process.p": "Unser bewährter Prozess sorgt für Transparenz und Planbarkeit in jeder Phase Ihres Projekts.",
+                    "process.step1.h3": "Discovery & Strategie",
+                    "process.step1.p": "Wir tauchen tief in Ihr Geschäftsmodell ein, um Ihre Ziele und Herausforderungen vollständig zu verstehen.",
+                    "process.step2.h3": "Design & Prototyping",
+                    "process.step2.p": "Wir erstellen intuitive User Interfaces und interaktive Prototypen, damit Sie die Software erleben können, bevor eine Zeile Code geschrieben wird.",
+                    "process.step3.h3": "Agile Entwicklung",
+                    "process.step3.p": "In zweiwöchigen Sprints entwickeln wir Ihre Software. Regelmäßige Demos halten Sie immer auf dem neuesten Stand.",
+                    "process.step4.h3": "Testing & Launch",
+                    "process.step4.p": "Umfassende Qualitätssicherung stellt sicher, dass Ihr Produkt fehlerfrei ist. Wir begleiten den Launch und sorgen für einen reibungslosen Start.",
+                    "process.step5.h3": "Support & Skalierung",
+                    "process.step5.p": "Auch nach dem Launch sind wir für Sie da. Wir warten die Software, unterstützen Ihre Nutzer und entwickeln sie strategisch weiter.",
+                    "contact.h2": "Sind Sie bereit, Ihr Projekt auf eine solide Basis zu stellen?",
+                    "contact.p": "Lassen Sie uns in einem unverbindlichen Gespräch herausfinden, wie wir Sie unterstützen können. Wir freuen uns darauf, von Ihrer Idee zu hören.",
+                    "contact.cta": "Lassen Sie uns über Ihr Projekt sprechen",
+                    "footer.copyright": "© 2024 Ihre Firma GmbH. Alle Rechte vorbehalten.",
+                    "footer.imprint": "Impressum",
+                    "footer.privacy": "Datenschutz"
+                },
+                en: {
+                    "title": "Your Experienced Partners for Custom Software Development",
+                    "nav.agency": "Your Agency",
+                    "nav.theme": "Select Theme:",
+                    "hero.h1.line1": "Custom software that drives your business forward.",
+                    "hero.h1.line2": "A partner you can rely on.",
+                    "hero.p": "We combine innovative technology with transparent processes to develop robust and scalable software solutions tailored exactly to your needs.",
+                    "hero.cta": "Schedule a Consultation",
+                    "problem.h2": "Your Project's Success, Plannable and Secure.",
+                    "problem.p": "We turn the typical uncertainties of software development into clear guarantees for you.",
+                    "problem.card1.h3": "Absolute Budget Adherence",
+                    "problem.card1.p": "Through detailed planning and transparent progress reports, we ensure your project stays within the agreed budget. For your complete planning security.",
+                    "problem.card2.h3": "Reliable Deadline Adherence",
+                    "problem.card2.p": "Our agile processes and proactive communication guarantee that we reliably meet milestones. We deliver on time, so you can plan with confidence.",
+                    "problem.card3.h3": "Transparent Partnership",
+                    "problem.card3.p": "You will have a dedicated contact person and receive regular, understandable updates. We create a trustworthy atmosphere through proactive and clear communication.",
+                    "solutions.h2": "Our Expertise for Your Success.",
+                    "solutions.p": "We don't just develop software – we create digital solutions that deliver real business results.",
+                    "solutions.card1.h3": "Custom Web Applications",
+                    "solutions.card1.p": "...that delight your users and optimize complex business processes. Scalable, secure, and perfectly tailored to your brand.",
+                    "solutions.card2.h3": "Mobile App Development",
+                    "solutions.card2.p": "...that convince on iOS and Android. We accompany you from the idea to the launch in the App Store and beyond.",
+                    "solutions.card3.h3": "Cloud & DevOps",
+                    "solutions.card3.p": "...for a robust and scalable infrastructure. We ensure that your application runs reliably and grows with your success.",
+                    "about.h2": "Two Experienced Developers. One Mission.",
+                    "about.p": "We combine our many years of expertise to lead your project to success with the highest quality and personal commitment.",
+                    "about.dev1.name": "Max Mustermann",
+                    "about.dev1.role": "Founder & Lead Developer",
+                    "about.dev1.desc": "With over 10 years of experience in developing complex enterprise applications, I ensure a stable, scalable, and secure architecture as the foundation of your project.",
+                    "about.dev2.name": "Erika Mustermann",
+                    "about.dev2.role": "Founder & UI/UX Specialist",
+                    "about.dev2.desc": "My passion is the interface between humans and machines. I ensure that your software not only works but is also intuitive to use and delights your users.",
+                    "process.h2": "A Clear Path from Idea to Finished Product.",
+                    "process.p": "Our proven process ensures transparency and predictability in every phase of your project.",
+                    "process.step1.h3": "Discovery & Strategy",
+                    "process.step1.p": "We dive deep into your business model to fully understand your goals and challenges.",
+                    "process.step2.h3": "Design & Prototyping",
+                    "process.step2.p": "We create intuitive user interfaces and interactive prototypes so you can experience the software before a line of code is written.",
+                    "process.step3.h3": "Agile Development",
+                    "process.step3.p": "We develop your software in two-week sprints. Regular demos always keep you up to date.",
+                    "process.step4.h3": "Testing & Launch",
+                    "process.step4.p": "Comprehensive quality assurance ensures that your product is flawless. We accompany the launch and ensure a smooth start.",
+                    "process.step5.h3": "Support & Scaling",
+                    "process.step5.p": "We are there for you even after the launch. We maintain the software, support your users, and strategically develop it further.",
+                    "contact.h2": "Are you ready to put your project on a solid foundation?",
+                    "contact.p": "Let's find out in a non-binding conversation how we can support you. We look forward to hearing about your idea.",
+                    "contact.cta": "Let's talk about your project",
+                    "footer.copyright": "© 2024 Your Company GmbH. All rights reserved.",
+                    "footer.imprint": "Imprint",
+                    "footer.privacy": "Privacy Policy"
+                }
+            };
+
+            const langDeBtn = document.getElementById('lang-de');
+            const langEnBtn = document.getElementById('lang-en');
+
+            function setLanguage(lang) {
+                document.documentElement.lang = lang;
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    el.innerHTML = translations[lang][key] || el.innerHTML;
+                });
+                langDeBtn.classList.toggle('active', lang === 'de');
+                langEnBtn.classList.toggle('active', lang === 'en');
+            }
+
+            langDeBtn.addEventListener('click', () => setLanguage('de'));
+            langEnBtn.addEventListener('click', () => setLanguage('en'));
+
+            // Set initial language
+            setLanguage('de');
+        });
+    </script>
+
+</body>
+</html>
