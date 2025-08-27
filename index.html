@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="title">Ihre erfahrenen Partner für maßgeschneiderte Softwareentwicklung</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
+
     <!-- Custom Styles & Configuration -->
     <style>
         :root {
@@ -26,6 +26,7 @@
             --card-bg-color: rgba(255, 255, 255, 0.5);
         }
 
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
@@ -34,11 +35,12 @@
         }
         #canvas-container {
             position: fixed;
-            top: 10rem;
+            top: 20rem;
             left: 8rem;
             width: 100%;
             height: 100vh;
             z-index: 1;
+            transition: all 0.3s ease;
         }
         .content-wrapper {
             position: relative;
@@ -79,12 +81,19 @@
             position: relative;
             z-index: 2;
         }
+        .hero-sub-title {
+            display: block;
+            max-width: 55%;
+            padding-top: 1rem;
+            font-size: 3rem;
+        }
         .hero-content {
             position: relative;
             z-index: 3;
             padding-top: 6.25vw; /* Golden Ratio: 10vw / 1.6 = 6.25vw */
             padding-left: 10vw; 
-            max-width: 45%; 
+            max-width: 100%;
+            transition: all 0.3s ease;
         }
         main {
             background-color: rgba(var(--bg-color-rgb), 0.8);
@@ -121,10 +130,92 @@
             background-color: var(--primary-color);
             color: var(--bg-color);
         }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            /* Canvas container positioning is now handled by JavaScript for screens < 1024px */
+            .hero-content {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* Canvas container positioning is now handled by JavaScript for screens < 768px */
+            .hero-content {
+                max-width: 100%;
+                padding-left: 0;
+                padding-top: 10vw;
+            }
+            .hero-section {
+                height: auto;
+                min-height: 100vh;
+                padding-bottom: 2rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            #canvas-container {
+                opacity: 0.5;
+            }
+            .theme-button .color-swatch {
+                width: 1rem;
+                height: 1rem;
+            }
+            .theme-button {
+                padding: 3px;
+                gap: 2px;
+            }
+            #theme-switcher {
+                gap: 0.25rem;
+            }
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            section {
+                padding-top: 3rem;
+                padding-bottom: 3rem;
+            }
+            h1 {
+                font-size: 2rem;
+                line-height: 1.2;
+            }
+            .hero-content {
+                max-width: 100%;
+            }
+            .hero-content h1 {
+                font-size: 1.75rem;
+                line-height: 1.2;
+            }
+            .hero-sub-title {
+                font-size: 1.75rem !important;
+            }
+            .hero-content p {
+                font-size: 1rem;
+                line-height: 1.5;
+            }
+            h2 {
+                font-size: 1.75rem;
+            }
+            .card-bg, .bg-white {
+                padding: 1.25rem;
+            }
+            .space-y-12 {
+                margin-top: 2rem;
+            }
+            .cta-button {
+                padding: 0.75rem 1.5rem;
+                width: 100%;
+                max-width: 300px;
+                text-align: center;
+                display: block;
+            }
+        }
+
     </style>
 </head>
 <body class="antialiased">
-    
+
     <div id="canvas-container"></div>
 
     <div class="content-wrapper">
@@ -138,52 +229,94 @@
                         <button id="lang-en">EN</button>
                     </div>
                     <span class="text-sm font-semibold text-primary-muted hidden md:inline" data-i18n="nav.theme">Theme wählen:</span>
-                    <div id="theme-switcher" class="flex items-center space-x-1 md:space-x-2 flex-wrap">
-                        <button class="theme-button" data-theme="innovativ-erdig" title="Innovativ-Erdig: Stabil, komfortabel, modern.">
-                            <span class="color-swatch" style="background-color: #FDF8F3;"></span>
-                            <span class="color-swatch" style="background-color: #2C3E50;"></span>
-                            <span class="color-swatch" style="background-color: #CC5500;"></span>
+                    <div class="relative">
+                        <button id="theme-dropdown-button" class="flex items-center space-x-2 bg-white/80 rounded-lg px-3 py-2 shadow-sm border border-gray-200/50">
+                            <div class="flex items-center space-x-1">
+                                <span class="color-swatch current-theme-swatch-1" style="background-color: #FDF8F3;"></span>
+                                <span class="color-swatch current-theme-swatch-2" style="background-color: #2C3E50;"></span>
+                                <span class="color-swatch current-theme-swatch-3" style="background-color: #CC5500;"></span>
+                            </div>
+                            <span class="text-sm font-medium current-theme-name">Innovativ-Erdig</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
                         </button>
-                        <button class="theme-button" data-theme="vertrauensvoll-warm" title="Vertrauensvoll-Warm: Seriös, reif, optimistisch.">
-                            <span class="color-swatch" style="background-color: #EAE7DD;"></span>
-                            <span class="color-swatch" style="background-color: #262223;"></span>
-                            <span class="color-swatch" style="background-color: #E1AD01;"></span>
-                        </button>
-                        <button class="theme-button" data-theme="professionell-kreativ" title="Professionell-Kreativ: Anspruchsvoll, beständig, menschlich.">
-                            <span class="color-swatch" style="background-color: #DCE1E3;"></span>
-                            <span class="color-swatch" style="background-color: #591C0B;"></span>
-                            <span class="color-swatch" style="background-color: #FF7A59;"></span>
-                        </button>
-                        <button class="theme-button" data-theme="klassisch-vertrauensvoll" title="Klassisch-Vertrauensvoll: Sicher, professionell, klar.">
-                            <span class="color-swatch" style="background-color: #F4F7FA;"></span>
-                            <span class="color-swatch" style="background-color: #1C3D5A;"></span>
-                            <span class="color-swatch" style="background-color: #007BFF;"></span>
-                        </button>
-                        <button class="theme-button" data-theme="elegant-fokussiert" title="Elegant-Fokussiert: Modern, seriös, anspruchsvoll.">
-                            <span class="color-swatch" style="background-color: #F5F5F5;"></span>
-                            <span class="color-swatch" style="background-color: #005F6B;"></span>
-                            <span class="color-swatch" style="background-color: #C5A880;"></span>
-                        </button>
-                        <button class="theme-button" data-theme="ruhig-klar" title="Ruhig & Klar: Frisch, modern, vertrauensvoll.">
-                            <span class="color-swatch" style="background-color: #F7F9F9;"></span>
-                            <span class="color-swatch" style="background-color: #2A3F54;"></span>
-                            <span class="color-swatch" style="background-color: #53b5a3;"></span>
-                        </button>
-                        <button class="theme-button" data-theme="kreativ-mutig" title="Kreativ & Mutig: Energiegeladen, innovativ, selbstbewusst.">
-                            <span class="color-swatch" style="background-color: #F5F5F7;"></span>
-                            <span class="color-swatch" style="background-color: #212121;"></span>
-                            <span class="color-swatch" style="background-color: #BB0099;"></span>
-                        </button>
-                        <button class="theme-button" data-theme="natuerlich-stabil" title="Natürlich & Stabil: Geerdet, wachstumsorientiert, nachhaltig.">
-                            <span class="color-swatch" style="background-color: #FCFBF8;"></span>
-                            <span class="color-swatch" style="background-color: #566A53;"></span>
-                            <span class="color-swatch" style="background-color: #D4B996;"></span>
-                        </button>
-                        <button class="theme-button" data-theme="klar-fokussiert" title="Klar & Fokussiert: Seriös, modern, zielgerichtet.">
-                            <span class="color-swatch" style="background-color: #F7F9F9;"></span>
-                            <span class="color-swatch" style="background-color: #2A3F54;"></span>
-                            <span class="color-swatch" style="background-color: #2E8B9A;"></span>
-                        </button>
+                        <div id="theme-switcher" class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg overflow-hidden z-50 hidden">
+                            <div class="p-2 max-h-80 overflow-y-auto">
+                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="innovativ-erdig" data-name="Innovativ-Erdig" title="Innovativ-Erdig: Stabil, komfortabel, modern.">
+                                    <div class="flex items-center space-x-1">
+                                        <span class="color-swatch" style="background-color: #FDF8F3;"></span>
+                                        <span class="color-swatch" style="background-color: #2C3E50;"></span>
+                                        <span class="color-swatch" style="background-color: #CC5500;"></span>
+                                    </div>
+                                    <span class="text-sm">Innovativ-Erdig</span>
+                                </button>
+                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="vertrauensvoll-warm" data-name="Vertrauensvoll-Warm" title="Vertrauensvoll-Warm: Seriös, reif, optimistisch.">
+                                    <div class="flex items-center space-x-1">
+                                        <span class="color-swatch" style="background-color: #EAE7DD;"></span>
+                                        <span class="color-swatch" style="background-color: #262223;"></span>
+                                        <span class="color-swatch" style="background-color: #E1AD01;"></span>
+                                    </div>
+                                    <span class="text-sm">Vertrauensvoll-Warm</span>
+                                </button>
+                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="professionell-kreativ" data-name="Professionell-Kreativ" title="Professionell-Kreativ: Anspruchsvoll, beständig, menschlich.">
+                                    <div class="flex items-center space-x-1">
+                                        <span class="color-swatch" style="background-color: #DCE1E3;"></span>
+                                        <span class="color-swatch" style="background-color: #591C0B;"></span>
+                                        <span class="color-swatch" style="background-color: #FF7A59;"></span>
+                                    </div>
+                                    <span class="text-sm">Professionell-Kreativ</span>
+                                </button>
+                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="klassisch-vertrauensvoll" data-name="Klassisch-Vertrauensvoll" title="Klassisch-Vertrauensvoll: Sicher, professionell, klar.">
+                                    <div class="flex items-center space-x-1">
+                                        <span class="color-swatch" style="background-color: #F4F7FA;"></span>
+                                        <span class="color-swatch" style="background-color: #1C3D5A;"></span>
+                                        <span class="color-swatch" style="background-color: #007BFF;"></span>
+                                    </div>
+                                    <span class="text-sm">Klassisch-Vertrauensvoll</span>
+                                </button>
+                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="elegant-fokussiert" data-name="Elegant-Fokussiert" title="Elegant-Fokussiert: Modern, seriös, anspruchsvoll.">
+                                    <div class="flex items-center space-x-1">
+                                        <span class="color-swatch" style="background-color: #F5F5F5;"></span>
+                                        <span class="color-swatch" style="background-color: #005F6B;"></span>
+                                        <span class="color-swatch" style="background-color: #C5A880;"></span>
+                                    </div>
+                                    <span class="text-sm">Elegant-Fokussiert</span>
+                                </button>
+                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="ruhig-klar" data-name="Ruhig & Klar" title="Ruhig & Klar: Frisch, modern, vertrauensvoll.">
+                                    <div class="flex items-center space-x-1">
+                                        <span class="color-swatch" style="background-color: #F7F9F9;"></span>
+                                        <span class="color-swatch" style="background-color: #2A3F54;"></span>
+                                        <span class="color-swatch" style="background-color: #53b5a3;"></span>
+                                    </div>
+                                    <span class="text-sm">Ruhig & Klar</span>
+                                </button>
+                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="kreativ-mutig" data-name="Kreativ & Mutig" title="Kreativ & Mutig: Energiegeladen, innovativ, selbstbewusst.">
+                                    <div class="flex items-center space-x-1">
+                                        <span class="color-swatch" style="background-color: #F5F5F7;"></span>
+                                        <span class="color-swatch" style="background-color: #212121;"></span>
+                                        <span class="color-swatch" style="background-color: #BB0099;"></span>
+                                    </div>
+                                    <span class="text-sm">Kreativ & Mutig</span>
+                                </button>
+                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="natuerlich-stabil" data-name="Natürlich & Stabil" title="Natürlich & Stabil: Geerdet, wachstumsorientiert, nachhaltig.">
+                                    <div class="flex items-center space-x-1">
+                                        <span class="color-swatch" style="background-color: #FCFBF8;"></span>
+                                        <span class="color-swatch" style="background-color: #566A53;"></span>
+                                        <span class="color-swatch" style="background-color: #D4B996;"></span>
+                                    </div>
+                                    <span class="text-sm">Natürlich & Stabil</span>
+                                </button>
+                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="klar-fokussiert" data-name="Klar & Fokussiert" title="Klar & Fokussiert: Seriös, modern, zielgerichtet.">
+                                    <div class="flex items-center space-x-1">
+                                        <span class="color-swatch" style="background-color: #F7F9F9;"></span>
+                                        <span class="color-swatch" style="background-color: #2A3F54;"></span>
+                                        <span class="color-swatch" style="background-color: #2E8B9A;"></span>
+                                    </div>
+                                    <span class="text-sm">Klar & Fokussiert</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -194,7 +327,7 @@
             <div class="hero-content container mx-auto px-6 text-left">
                 <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 text-black">
                     <span data-i18n="hero.h1.line1">Maßgeschneiderte Software, die Ihr Geschäft voranbringt.</span> <br class="hidden md:block">
-                    <span class="accent-color" data-i18n="hero.h1.line2">Ein Partner, auf den Sie sich verlassen können.</span>
+                    <span class="hero-sub-title accent-color" data-i18n="hero.h1.line2">Ein Partner, auf den Sie sich verlassen können.</span>
                 </h1>
                 <p class="text-lg md:text-xl max-w-xl mx-0 mb-8 text-black" data-i18n="hero.p">
                     Wir kombinieren innovative Technologie mit transparenten Prozessen, um robuste und skalierbare Softwarelösungen zu entwickeln, die exakt auf Ihre Bedürfnisse zugeschnitten sind.
@@ -227,7 +360,7 @@
                     </div>
                 </div>
             </section>
-            
+
             <!-- Sektion 3: Unsere Lösungen -->
             <section id="loesungen" class="py-20 md:py-32 section-bg section-fade-in">
                 <div class="container mx-auto px-6">
@@ -256,21 +389,33 @@
             <section id="vertrauen" class="py-20 md:py-32 section-fade-in">
                 <div class="container mx-auto px-6">
                     <div class="text-center mb-16">
-                        <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="about.h2">Zwei erfahrene Entwickler. Eine Mission.</h2>
+                        <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="about.h2">Ein erfahrenes Team. Eine Mission.</h2>
                         <p class="text-lg text-primary-muted max-w-3xl mx-auto" data-i18n="about.p">Wir bündeln unsere langjährige Expertise, um Ihr Projekt mit höchster Qualität und persönlichem Engagement zum Erfolg zu führen.</p>
                     </div>
                     <div class="grid md:grid-cols-2 gap-8 md:gap-12 max-w-4xl mx-auto">
                         <div class="card-bg p-8 rounded-xl shadow-sm text-center">
                             <img src="https://placehold.co/120x120/EAE7DD/2C3E50?text=Foto" alt="Foto von Entwickler 1" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md">
-                            <h3 class="text-2xl font-bold" data-i18n="about.dev1.name">Max Mustermann</h3>
-                            <p class="font-semibold accent-color mb-2" data-i18n="about.dev1.role">Gründer & Lead-Entwickler</p>
-                            <p class="text-primary-muted" data-i18n="about.dev1.desc">Mit über 10 Jahren Erfahrung in der Entwicklung komplexer Enterprise-Anwendungen sorge ich für eine stabile, skalierbare und sichere Architektur als Fundament Ihres Projekts.</p>
+                            <h3 class="text-2xl font-bold" data-i18n="about.dev1.name">Anne Kaufmann</h3>
+                            <p class="font-semibold accent-color mb-2" data-i18n="about.dev1.role">Networking</p>
+                            <p class="text-primary-muted" data-i18n="about.dev1.desc">to be done</p>
                         </div>
                         <div class="card-bg p-8 rounded-xl shadow-sm text-center">
                             <img src="https://placehold.co/120x120/EAE7DD/2C3E50?text=Foto" alt="Foto von Entwickler 2" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md">
                             <h3 class="text-2xl font-bold" data-i18n="about.dev2.name">Erika Mustermann</h3>
                             <p class="font-semibold accent-color mb-2" data-i18n="about.dev2.role">Gründerin & UI/UX-Spezialistin</p>
                             <p class="text-primary-muted" data-i18n="about.dev2.desc">Meine Leidenschaft ist die Schnittstelle zwischen Mensch und Maschine. Ich sorge dafür, dass Ihre Software nicht nur funktioniert, sondern auch intuitiv bedienbar ist und Ihre Nutzer begeistert.</p>
+                        </div>
+                        <div class="card-bg p-8 rounded-xl shadow-sm text-center">
+                            <img src="https://placehold.co/120x120/EAE7DD/2C3E50?text=Foto" alt="Foto von Entwickler 2" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md">
+                            <h3 class="text-2xl font-bold" data-i18n="about.dev3.name">Erika Mustermann</h3>
+                            <p class="font-semibold accent-color mb-2" data-i18n="about.dev3.role">Gründerin & UI/UX-Spezialistin</p>
+                            <p class="text-primary-muted" data-i18n="about.dev3.desc">Meine Leidenschaft ist die Schnittstelle zwischen Mensch und Maschine. Ich sorge dafür, dass Ihre Software nicht nur funktioniert, sondern auch intuitiv bedienbar ist und Ihre Nutzer begeistert.</p>
+                        </div>
+                        <div class="card-bg p-8 rounded-xl shadow-sm text-center">
+                            <img src="https://placehold.co/120x120/EAE7DD/2C3E50?text=Foto" alt="Foto von Entwickler 2" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md">
+                            <h3 class="text-2xl font-bold" data-i18n="about.dev4.name">Erika Mustermann</h3>
+                            <p class="font-semibold accent-color mb-2" data-i18n="about.dev4.role">Gründerin & UI/UX-Spezialistin</p>
+                            <p class="text-primary-muted" data-i18n="about.dev4.desc">Meine Leidenschaft ist die Schnittstelle zwischen Mensch und Maschine. Ich sorge dafür, dass Ihre Software nicht nur funktioniert, sondern auch intuitiv bedienbar ist und Ihre Nutzer begeistert.</p>
                         </div>
                     </div>
                 </div>
@@ -285,7 +430,8 @@
                     </div>
                     <div class="relative">
                         <div class="hidden md:block absolute top-5 left-1/2 w-0.5 h-full bg-gray-300/70 -translate-x-1/2"></div>
-                        <div class="space-y-12 md:space-y-0">
+                        <div class="md:hidden absolute top-0 left-5 w-0.5 h-full bg-gray-300/70"></div>
+                        <div class="space-y-12 md:space-y-0 pl-10 md:pl-0">
                             <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative"><div class="md:text-right md:pr-8"><div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2 md:ml-auto">1</div><h3 class="text-xl font-bold" data-i18n="process.step1.h3">Discovery & Strategie</h3><p class="text-primary-muted" data-i18n="process.step1.p">Wir tauchen tief in Ihr Geschäftsmodell ein, um Ihre Ziele und Herausforderungen vollständig zu verstehen.</p></div><div class="hidden md:block"></div></div>
                             <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative"><div class="hidden md:block"></div><div class="md:pl-8"><div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2">2</div><h3 class="text-xl font-bold" data-i18n="process.step2.h3">Design & Prototyping</h3><p class="text-primary-muted" data-i18n="process.step2.p">Wir erstellen intuitive User Interfaces und interaktive Prototypen, damit Sie die Software erleben können, bevor eine Zeile Code geschrieben wird.</p></div></div>
                             <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative"><div class="md:text-right md:pr-8"><div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2 md:ml-auto">3</div><h3 class="text-xl font-bold" data-i18n="process.step3.h3">Agile Entwicklung</h3><p class="text-primary-muted" data-i18n="process.step3.p">In zweiwöchigen Sprints entwickeln wir Ihre Software. Regelmäßige Demos halten Sie immer auf dem neuesten Stand.</p></div></div>
@@ -301,7 +447,7 @@
                 <div class="container mx-auto px-6 text-center">
                     <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="contact.h2">Sind Sie bereit, Ihr Projekt auf eine solide Basis zu stellen?</h2>
                     <p class="text-lg text-primary-muted max-w-2xl mx-auto mb-8" data-i18n="contact.p">Lassen Sie uns in einem unverbindlichen Gespräch herausfinden, wie wir Sie unterstützen können. Wir freuen uns darauf, von Ihrer Idee zu hören.</p>
-                    <a href="mailto:hallo@ihredomain.de" class="bg-accent text-white font-bold py-4 px-10 rounded-lg text-lg mx-auto cta-button" data-i18n="contact.cta">
+                    <a href="mailto:info@englberger-it.de" class="bg-accent text-white font-bold py-4 px-10 rounded-lg text-lg mx-auto cta-button" data-i18n="contact.cta">
                         Lassen Sie uns über Ihr Projekt sprechen
                     </a>
                 </div>
@@ -367,7 +513,7 @@
             corePointsGeometry.setAttribute('color', new THREE.Float32BufferAttribute(coreNumPoints * 3, 3));
             const corePointsObject = new THREE.Points(corePointsGeometry, pointsMaterial);
             coreGroup.add(corePointsObject);
-            
+
             const coreLinesGeometry = new THREE.BufferGeometry();
             const coreLinePositions = [];
             for (let i = 0; i < coreNumPoints; i++) {
@@ -383,7 +529,7 @@
             coreGroup.add(coreLinesObject);
 
             group.add(coreGroup);
-            
+
             // --- Orbital Networks ---
             const orbitalGroup = new THREE.Group();
             group.add(orbitalGroup);
@@ -432,7 +578,7 @@
             orbitalLinesGeometry.setAttribute('position', new THREE.Float32BufferAttribute(orbitalLinePositions, 3));
             const orbitalLinesObject = new THREE.LineSegments(orbitalLinesGeometry, linesMaterial);
             orbitalGroup.add(orbitalLinesObject);
-            
+
             // --- Lighting ---
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(ambientLight);
@@ -459,29 +605,111 @@
             const clock = new THREE.Clock();
             function animate() {
                 const elapsedTime = clock.getElapsedTime();
-                
+
                 coreGroup.rotation.y = elapsedTime * 0.1;
                 orbitalGroup.rotation.y = elapsedTime * 0.05;
                 orbitalGroup.rotation.x = elapsedTime * 0.02;
 
-                const parallaxX = cursor.x * 0.5;
-                const parallaxY = cursor.y * 0.5;
-                group.position.x += ( (1.8 + parallaxX) - group.position.x) * 0.05;
+                // Reduce parallax effect on smaller screens
+                let parallaxStrength = 0.5;
+                if (window.innerWidth < 768) {
+                    parallaxStrength = 0.2;
+                } else if (window.innerWidth < 1024) {
+                    parallaxStrength = 0.3;
+                }
+
+                const parallaxX = cursor.x * parallaxStrength;
+                const parallaxY = cursor.y * parallaxStrength;
+
+                // Get base position based on screen size
+                let baseX = 1.8;
+                if (window.innerWidth < 768) {
+                    baseX = 0.5; // Move further right on mobile
+                } else if (window.innerWidth < 1024) {
+                    baseX = 1.5; // Move further right on tablets
+                }
+
+                group.position.x += ( (baseX + parallaxX) - group.position.x) * 0.05;
                 group.position.y += (parallaxY - group.position.y) * 0.05;
 
                 renderer.render(scene, camera);
                 requestAnimationFrame(animate);
             }
             animate();
-            
+
             // --- Resize ---
-            window.addEventListener('resize', () => {
+            function handleResize() {
                 camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(window.innerWidth, window.innerHeight);
                 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+                // Adjust group position based on screen size
+                if (window.innerWidth < 768) {
+                    group.position.x = 0.5; // Move further right on mobile
+                } else if (window.innerWidth < 1024) {
+                    group.position.x = 1.5; // Move further right on tablets
+                } else {
+                    group.position.x = 1.8; // Original position for desktop
+
+                    // Reset canvas container position for desktop
+                    const canvasContainer = document.getElementById('canvas-container');
+                    if (canvasContainer) {
+                        canvasContainer.style.top = '0';
+                        canvasContainer.style.left = '8rem';
+                    }
+                }
+            }
+
+            window.addEventListener('resize', handleResize);
+            // Initial call to set correct sizes
+            handleResize();
+
+            // --- Canvas Position Alignment with hero-sub-title ---
+            function alignCanvasWithHeroSubtitle() {
+
+                const heroSubtitle = document.querySelector('.hero-sub-title');
+                const canvasContainer = document.getElementById('canvas-container');
+
+                if (heroSubtitle && canvasContainer) {
+                    // Get the position and dimensions of the hero subtitle
+                    const heroRect = heroSubtitle.getBoundingClientRect();
+
+                    // Calculate the middle point of the hero subtitle
+                    const heroMiddle = heroRect.top + (heroRect.height / 2);
+
+                    // Set the canvas container position to align its middle with the hero subtitle
+                    // We need to account for scroll position since getBoundingClientRect() is relative to viewport
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    canvasContainer.style.top = `${heroMiddle + scrollTop - (window.innerHeight / 2)}px`;
+
+                    // Move the animation further to the right on smaller screens
+                    if(window.innerWidth > 1024){
+                        canvasContainer.style.top = '8rem';
+                    }
+                    if (window.innerWidth < 768) {
+                        canvasContainer.style.left = '6rem';
+                    } else if (window.innerWidth < 1024) {
+                        canvasContainer.style.left = '8rem';
+                    }
+                }
+            }
+
+            // Call the alignment function initially and on resize
+            alignCanvasWithHeroSubtitle();
+            window.addEventListener('resize', alignCanvasWithHeroSubtitle);
+
+            // Add scroll listener with throttling to maintain alignment during scrolling
+            let scrollTimeout;
+            window.addEventListener('scroll', function() {
+                if (!scrollTimeout) {
+                    scrollTimeout = setTimeout(function() {
+                        alignCanvasWithHeroSubtitle();
+                        scrollTimeout = null;
+                    }, 100);
+                }
             });
-            
+
             // --- Theme Switcher Logic ---
             const themes = {
                 'innovativ-erdig': { '--bg-color': '#FDF8F3', '--bg-color-rgb': '253, 248, 243', '--primary-color': '#2C3E50', '--primary-color-rgb': '44, 62, 80', '--accent-color': '#CC5500', '--accent-color-rgb': '204, 85, 0', '--card-bg-color': 'rgba(255, 255, 255, 0.5)' },
@@ -504,7 +732,7 @@
                 for (const [key, value] of Object.entries(selectedTheme)) {
                     root.style.setProperty(key, value);
                 }
-                
+
                 primaryColor.set(selectedTheme['--primary-color']);
                 accentColor.set(selectedTheme['--accent-color']);
 
@@ -523,17 +751,61 @@
                     colors.setXYZ(i, color.r, color.g, color.b);
                 }
                 colors.needsUpdate = true;
-                
+
                 linesMaterial.color.set(primaryColor);
                 coreLinesObject.material.color.set(primaryColor);
 
                 buttons.forEach(button => {
                     button.classList.toggle('active', button.dataset.theme === themeName);
                 });
+
+                // Update dropdown button to show current theme
+                const currentThemeName = document.querySelector('.current-theme-name');
+                const currentThemeSwatch1 = document.querySelector('.current-theme-swatch-1');
+                const currentThemeSwatch2 = document.querySelector('.current-theme-swatch-2');
+                const currentThemeSwatch3 = document.querySelector('.current-theme-swatch-3');
+
+                // Find the selected button to get its name
+                const selectedButton = Array.from(buttons).find(btn => btn.dataset.theme === themeName);
+                if (selectedButton) {
+                    currentThemeName.textContent = selectedButton.dataset.name || selectedButton.dataset.theme;
+
+                    // Get the color swatches from the selected button
+                    const swatches = selectedButton.querySelectorAll('.color-swatch');
+                    if (swatches.length >= 3) {
+                        currentThemeSwatch1.style.backgroundColor = swatches[0].style.backgroundColor;
+                        currentThemeSwatch2.style.backgroundColor = swatches[1].style.backgroundColor;
+                        currentThemeSwatch3.style.backgroundColor = swatches[2].style.backgroundColor;
+                    }
+                }
+
+                // Re-align canvas after theme change (with a small delay to ensure DOM update)
+                // Only call alignCanvasWithHeroSubtitle for screens smaller than 1024px
+                if (window.innerWidth < 1024) {
+                    setTimeout(alignCanvasWithHeroSubtitle, 100);
+                }
             }
 
+            // Theme dropdown functionality
+            const themeDropdownButton = document.getElementById('theme-dropdown-button');
+            const themeDropdown = document.getElementById('theme-switcher');
+
+            themeDropdownButton.addEventListener('click', () => {
+                themeDropdown.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (event) => {
+                if (!themeDropdownButton.contains(event.target) && !themeDropdown.contains(event.target)) {
+                    themeDropdown.classList.add('hidden');
+                }
+            });
+
             buttons.forEach(button => {
-                button.addEventListener('click', () => setTheme(button.dataset.theme));
+                button.addEventListener('click', () => {
+                    setTheme(button.dataset.theme);
+                    themeDropdown.classList.add('hidden');
+                });
             });
 
             setTheme('innovativ-erdig');
@@ -548,7 +820,7 @@
             }, { threshold: 0.1 });
 
             sections.forEach(section => observer.observe(section));
-            
+
             // --- i18n Logic ---
             const translations = {
                 de: {
@@ -577,12 +849,18 @@
                     "solutions.card3.p": "...für eine robuste und skalierbare Infrastruktur. Wir sorgen dafür, dass Ihre Anwendung zuverlässig läuft und mit Ihrem Erfolg wächst.",
                     "about.h2": "Zwei erfahrene Entwickler. Eine Mission.",
                     "about.p": "Wir bündeln unsere langjährige Expertise, um Ihr Projekt mit höchster Qualität und persönlichem Engagement zum Erfolg zu führen.",
-                    "about.dev1.name": "Max Mustermann",
-                    "about.dev1.role": "Gründer & Lead-Entwickler",
-                    "about.dev1.desc": "Mit über 10 Jahren Erfahrung in der Entwicklung komplexer Enterprise-Anwendungen sorge ich für eine stabile, skalierbare und sichere Architektur als Fundament Ihres Projekts.",
-                    "about.dev2.name": "Erika Mustermann",
-                    "about.dev2.role": "Gründerin & UI/UX-Spezialistin",
-                    "about.dev2.desc": "Meine Leidenschaft ist die Schnittstelle zwischen Mensch und Maschine. Ich sorge dafür, dass Ihre Software nicht nur funktioniert, sondern auch intuitiv bedienbar ist und Ihre Nutzer begeistert.",
+                    "about.dev1.name": "Anne Kaufmann",
+                    "about.dev1.role": "Gründerin & Networking",
+                    "about.dev1.desc": "to be done",
+                    "about.dev2.name": "Daniel Erbe",
+                    "about.dev2.role": "Gründer & Networking",
+                    "about.dev2.desc": "to be done",
+                    "about.dev3.name": "Florian Englberger",
+                    "about.dev3.role": "Gründer & Lead-Entwickler",
+                    "about.dev3.desc": "Mit über 10 Jahren Erfahrung in der Entwicklung komplexer Enterprise-Anwendungen sorge ich für eine stabile, skalierbare und sichere Architektur als Fundament Ihres Projekts.",
+                    "about.dev4.name": "Matthias Tritt",
+                    "about.dev4.role": "Gründerin & UI/UX-Spezialistin",
+                    "about.dev4.desc": "Meine Leidenschaft ist die Schnittstelle zwischen Mensch und Maschine. Ich sorge dafür, dass Ihre Software nicht nur funktioniert, sondern auch intuitiv bedienbar ist und Ihre Nutzer begeistert.",
                     "process.h2": "Ein klarer Weg von der Idee zum fertigen Produkt.",
                     "process.p": "Unser bewährter Prozess sorgt für Transparenz und Planbarkeit in jeder Phase Ihres Projekts.",
                     "process.step1.h3": "Discovery & Strategie",
@@ -628,12 +906,18 @@
                     "solutions.card3.p": "...for a robust and scalable infrastructure. We ensure that your application runs reliably and grows with your success.",
                     "about.h2": "Two Experienced Developers. One Mission.",
                     "about.p": "We combine our many years of expertise to lead your project to success with the highest quality and personal commitment.",
-                    "about.dev1.name": "Max Mustermann",
-                    "about.dev1.role": "Founder & Lead Developer",
-                    "about.dev1.desc": "With over 10 years of experience in developing complex enterprise applications, I ensure a stable, scalable, and secure architecture as the foundation of your project.",
-                    "about.dev2.name": "Erika Mustermann",
-                    "about.dev2.role": "Founder & UI/UX Specialist",
-                    "about.dev2.desc": "My passion is the interface between humans and machines. I ensure that your software not only works but is also intuitive to use and delights your users.",
+                    "about.dev1.name": "Anne Kaufmann",
+                    "about.dev1.role": "Founder & Networking",
+                    "about.dev1.desc": "to be done",
+                    "about.dev2.name": "Daniel Erbe",
+                    "about.dev2.role": "Founder & Networking",
+                    "about.dev2.desc": "to be done",
+                    "about.dev3.name": "Florian Englberger",
+                    "about.dev3.role": "Founder & Lead Developer",
+                    "about.dev3.desc": "With over 10 years of experience in developing complex enterprise applications, I ensure a stable, scalable, and secure architecture as the foundation of your project.",
+                    "about.dev4.name": "Matthias Tritt",
+                    "about.dev4.role": "Founder & UI/UX Specialist",
+                    "about.dev4.desc": "My passion is the interface between humans and machines. I ensure that your software not only works but is also intuitive to use and delights your users.",
                     "process.h2": "A Clear Path from Idea to Finished Product.",
                     "process.p": "Our proven process ensures transparency and predictability in every phase of your project.",
                     "process.step1.h3": "Discovery & Strategy",
