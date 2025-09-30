@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="de" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="title">Ihre erfahrenen Partner für maßgeschneiderte Softwareentwicklung</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Custom Styles & Configuration -->
-    <style>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title data-i18n="title">Ihre erfahrenen Partner für maßgeschneiderte Softwareentwicklung</title>
+        <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+        <!-- Tailwind CSS -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Google Fonts: Inter -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+        <!-- Custom Styles & Configuration -->
+        <style>
         :root {
             /* Default Theme: Klar & Fokussiert */
             --bg-color: #F7F9F9;
@@ -76,8 +74,8 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; 
-            align-items: flex-start; 
+            justify-content: flex-start;
+            align-items: flex-start;
             position: relative;
             z-index: 2;
         }
@@ -91,7 +89,7 @@
             position: relative;
             z-index: 3;
             padding-top: 6.25vw; /* Golden Ratio: 10vw / 1.6 = 6.25vw */
-            padding-left: 10vw; 
+            padding-left: 10vw;
             max-width: 100%;
             transition: all 0.3s ease;
         }
@@ -212,347 +210,435 @@
                 display: block;
             }
         }
-
-    </style>
-</head>
-<body class="antialiased">
-
-    <div id="canvas-container"></div>
-
-    <div class="content-wrapper">
-        <!-- Header mit Theme Switcher -->
-        <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
-            <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-                <div class="font-bold text-lg text-primary" data-i18n="nav.agency">Ihre Agentur</div>
-                <div class="flex items-center space-x-2 md:space-x-4">
-                    <div class="lang-switch flex items-center space-x-1 bg-gray-200/50 p-1 rounded-full">
-                        <button id="lang-de">DE</button>
-                        <button id="lang-en">EN</button>
+        </style>
+    </head>
+    <body class="antialiased">
+        <div id="canvas-container"></div>
+        <div class="content-wrapper">
+            <!-- Header mit Theme Switcher -->
+            <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
+                <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+                    <div class="flex items-center">
+                        <img src="assets/logo.png" alt="Logispher Logo" class="hidden sm:block w-8 h-8 mr-2">
+                        <div class="font-bold text-lg text-primary" data-i18n="nav.agency">
+                            LOGISPHER
+                        </div>
                     </div>
-                    <span class="text-sm font-semibold text-primary-muted hidden md:inline" data-i18n="nav.theme">Theme wählen:</span>
-                    <div class="relative">
-                        <button id="theme-dropdown-button" class="flex items-center space-x-2 bg-white/80 rounded-lg px-3 py-2 shadow-sm border border-gray-200/50">
-                            <div class="flex items-center space-x-1">
-                                <span class="color-swatch current-theme-swatch-1" style="background-color: #F7F9F9;"></span>
-                                <span class="color-swatch current-theme-swatch-2" style="background-color: #2A3F54;"></span>
-                                <span class="color-swatch current-theme-swatch-3" style="background-color: #2E8B9A;"></span>
+                    <div class="flex items-center space-x-2 md:space-x-4">
+                        <div class="lang-switch flex items-center space-x-1 bg-gray-200/50 p-1 rounded-full">
+                            <button id="lang-de">DE</button>
+                            <button id="lang-en">EN</button>
+                        </div>
+                        <span class="text-sm font-semibold text-primary-muted hidden md:inline" data-i18n="nav.theme">Theme wählen:</span>
+                        <div class="relative">
+                            <button id="theme-dropdown-button" class="flex items-center space-x-2 bg-white/80 rounded-lg px-3 py-2 shadow-sm border border-gray-200/50">
+                                <div class="flex items-center space-x-1">
+                                    <span class="color-swatch current-theme-swatch-1" style="background-color: #F7F9F9;"></span>
+                                    <span class="color-swatch current-theme-swatch-2" style="background-color: #2A3F54;"></span>
+                                    <span class="color-swatch current-theme-swatch-3" style="background-color: #2E8B9A;"></span>
+                                </div>
+                                <span class="text-sm font-medium current-theme-name">Klar & Fokussiert</span>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-4 w-4"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M19 9l-7 7-7-7"
+                                    />
+                                </svg>
+                            </button>
+                            <div id="theme-switcher" class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg overflow-hidden z-50 hidden">
+                                <div class="p-2 max-h-80 overflow-y-auto">
+                                    <button
+                                        class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md"
+                                        data-theme="innovativ-erdig"
+                                        data-name="Innovativ-Erdig"
+                                        title="Innovativ-Erdig: Stabil, komfortabel, modern."
+                                    >
+                                        <div class="flex items-center space-x-1">
+                                            <span class="color-swatch" style="background-color: #FDF8F3;"></span>
+                                            <span class="color-swatch" style="background-color: #2C3E50;"></span>
+                                            <span class="color-swatch" style="background-color: #CC5500;"></span>
+                                        </div>
+                                        <span class="text-sm">Innovativ-Erdig</span>
+                                    </button>
+                                    <button
+                                        class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md"
+                                        data-theme="vertrauensvoll-warm"
+                                        data-name="Vertrauensvoll-Warm"
+                                        title="Vertrauensvoll-Warm: Seriös, reif, optimistisch."
+                                    >
+                                        <div class="flex items-center space-x-1">
+                                            <span class="color-swatch" style="background-color: #EAE7DD;"></span>
+                                            <span class="color-swatch" style="background-color: #262223;"></span>
+                                            <span class="color-swatch" style="background-color: #E1AD01;"></span>
+                                        </div>
+                                        <span class="text-sm">Vertrauensvoll-Warm</span>
+                                    </button>
+                                    <button
+                                        class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md"
+                                        data-theme="professionell-kreativ"
+                                        data-name="Professionell-Kreativ"
+                                        title="Professionell-Kreativ: Anspruchsvoll, beständig, menschlich."
+                                    >
+                                        <div class="flex items-center space-x-1">
+                                            <span class="color-swatch" style="background-color: #DCE1E3;"></span>
+                                            <span class="color-swatch" style="background-color: #591C0B;"></span>
+                                            <span class="color-swatch" style="background-color: #FF7A59;"></span>
+                                        </div>
+                                        <span class="text-sm">Professionell-Kreativ</span>
+                                    </button>
+                                    <button
+                                        class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md"
+                                        data-theme="klassisch-vertrauensvoll"
+                                        data-name="Klassisch-Vertrauensvoll"
+                                        title="Klassisch-Vertrauensvoll: Sicher, professionell, klar."
+                                    >
+                                        <div class="flex items-center space-x-1">
+                                            <span class="color-swatch" style="background-color: #F4F7FA;"></span>
+                                            <span class="color-swatch" style="background-color: #1C3D5A;"></span>
+                                            <span class="color-swatch" style="background-color: #007BFF;"></span>
+                                        </div>
+                                        <span class="text-sm">Klassisch-Vertrauensvoll</span>
+                                    </button>
+                                    <button
+                                        class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md"
+                                        data-theme="elegant-fokussiert"
+                                        data-name="Elegant-Fokussiert"
+                                        title="Elegant-Fokussiert: Modern, seriös, anspruchsvoll."
+                                    >
+                                        <div class="flex items-center space-x-1">
+                                            <span class="color-swatch" style="background-color: #F5F5F5;"></span>
+                                            <span class="color-swatch" style="background-color: #005F6B;"></span>
+                                            <span class="color-swatch" style="background-color: #C5A880;"></span>
+                                        </div>
+                                        <span class="text-sm">Elegant-Fokussiert</span>
+                                    </button>
+                                    <button
+                                        class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md"
+                                        data-theme="ruhig-klar"
+                                        data-name="Ruhig & Klar"
+                                        title="Ruhig & Klar: Frisch, modern, vertrauensvoll."
+                                    >
+                                        <div class="flex items-center space-x-1">
+                                            <span class="color-swatch" style="background-color: #F7F9F9;"></span>
+                                            <span class="color-swatch" style="background-color: #2A3F54;"></span>
+                                            <span class="color-swatch" style="background-color: #53b5a3;"></span>
+                                        </div>
+                                        <span class="text-sm">Ruhig & Klar</span>
+                                    </button>
+                                    <button
+                                        class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md"
+                                        data-theme="kreativ-mutig"
+                                        data-name="Kreativ & Mutig"
+                                        title="Kreativ & Mutig: Energiegeladen, innovativ, selbstbewusst."
+                                    >
+                                        <div class="flex items-center space-x-1">
+                                            <span class="color-swatch" style="background-color: #F5F5F7;"></span>
+                                            <span class="color-swatch" style="background-color: #212121;"></span>
+                                            <span class="color-swatch" style="background-color: #BB0099;"></span>
+                                        </div>
+                                        <span class="text-sm">Kreativ & Mutig</span>
+                                    </button>
+                                    <button
+                                        class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md"
+                                        data-theme="natuerlich-stabil"
+                                        data-name="Natürlich & Stabil"
+                                        title="Natürlich & Stabil: Geerdet, wachstumsorientiert, nachhaltig."
+                                    >
+                                        <div class="flex items-center space-x-1">
+                                            <span class="color-swatch" style="background-color: #FCFBF8;"></span>
+                                            <span class="color-swatch" style="background-color: #566A53;"></span>
+                                            <span class="color-swatch" style="background-color: #D4B996;"></span>
+                                        </div>
+                                        <span class="text-sm">Natürlich & Stabil</span>
+                                    </button>
+                                    <button
+                                        class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md"
+                                        data-theme="klar-fokussiert"
+                                        data-name="Klar & Fokussiert"
+                                        title="Klar & Fokussiert: Seriös, modern, zielgerichtet."
+                                    >
+                                        <div class="flex items-center space-x-1">
+                                            <span class="color-swatch" style="background-color: #F7F9F9;"></span>
+                                            <span class="color-swatch" style="background-color: #2A3F54;"></span>
+                                            <span class="color-swatch" style="background-color: #2E8B9A;"></span>
+                                        </div>
+                                        <span class="text-sm">Klar & Fokussiert</span>
+                                    </button>
+                                </div>
                             </div>
-                            <span class="text-sm font-medium current-theme-name">Klar & Fokussiert</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div id="theme-switcher" class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg overflow-hidden z-50 hidden">
-                            <div class="p-2 max-h-80 overflow-y-auto">
-                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="innovativ-erdig" data-name="Innovativ-Erdig" title="Innovativ-Erdig: Stabil, komfortabel, modern.">
-                                    <div class="flex items-center space-x-1">
-                                        <span class="color-swatch" style="background-color: #FDF8F3;"></span>
-                                        <span class="color-swatch" style="background-color: #2C3E50;"></span>
-                                        <span class="color-swatch" style="background-color: #CC5500;"></span>
-                                    </div>
-                                    <span class="text-sm">Innovativ-Erdig</span>
-                                </button>
-                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="vertrauensvoll-warm" data-name="Vertrauensvoll-Warm" title="Vertrauensvoll-Warm: Seriös, reif, optimistisch.">
-                                    <div class="flex items-center space-x-1">
-                                        <span class="color-swatch" style="background-color: #EAE7DD;"></span>
-                                        <span class="color-swatch" style="background-color: #262223;"></span>
-                                        <span class="color-swatch" style="background-color: #E1AD01;"></span>
-                                    </div>
-                                    <span class="text-sm">Vertrauensvoll-Warm</span>
-                                </button>
-                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="professionell-kreativ" data-name="Professionell-Kreativ" title="Professionell-Kreativ: Anspruchsvoll, beständig, menschlich.">
-                                    <div class="flex items-center space-x-1">
-                                        <span class="color-swatch" style="background-color: #DCE1E3;"></span>
-                                        <span class="color-swatch" style="background-color: #591C0B;"></span>
-                                        <span class="color-swatch" style="background-color: #FF7A59;"></span>
-                                    </div>
-                                    <span class="text-sm">Professionell-Kreativ</span>
-                                </button>
-                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="klassisch-vertrauensvoll" data-name="Klassisch-Vertrauensvoll" title="Klassisch-Vertrauensvoll: Sicher, professionell, klar.">
-                                    <div class="flex items-center space-x-1">
-                                        <span class="color-swatch" style="background-color: #F4F7FA;"></span>
-                                        <span class="color-swatch" style="background-color: #1C3D5A;"></span>
-                                        <span class="color-swatch" style="background-color: #007BFF;"></span>
-                                    </div>
-                                    <span class="text-sm">Klassisch-Vertrauensvoll</span>
-                                </button>
-                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="elegant-fokussiert" data-name="Elegant-Fokussiert" title="Elegant-Fokussiert: Modern, seriös, anspruchsvoll.">
-                                    <div class="flex items-center space-x-1">
-                                        <span class="color-swatch" style="background-color: #F5F5F5;"></span>
-                                        <span class="color-swatch" style="background-color: #005F6B;"></span>
-                                        <span class="color-swatch" style="background-color: #C5A880;"></span>
-                                    </div>
-                                    <span class="text-sm">Elegant-Fokussiert</span>
-                                </button>
-                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="ruhig-klar" data-name="Ruhig & Klar" title="Ruhig & Klar: Frisch, modern, vertrauensvoll.">
-                                    <div class="flex items-center space-x-1">
-                                        <span class="color-swatch" style="background-color: #F7F9F9;"></span>
-                                        <span class="color-swatch" style="background-color: #2A3F54;"></span>
-                                        <span class="color-swatch" style="background-color: #53b5a3;"></span>
-                                    </div>
-                                    <span class="text-sm">Ruhig & Klar</span>
-                                </button>
-                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="kreativ-mutig" data-name="Kreativ & Mutig" title="Kreativ & Mutig: Energiegeladen, innovativ, selbstbewusst.">
-                                    <div class="flex items-center space-x-1">
-                                        <span class="color-swatch" style="background-color: #F5F5F7;"></span>
-                                        <span class="color-swatch" style="background-color: #212121;"></span>
-                                        <span class="color-swatch" style="background-color: #BB0099;"></span>
-                                    </div>
-                                    <span class="text-sm">Kreativ & Mutig</span>
-                                </button>
-                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="natuerlich-stabil" data-name="Natürlich & Stabil" title="Natürlich & Stabil: Geerdet, wachstumsorientiert, nachhaltig.">
-                                    <div class="flex items-center space-x-1">
-                                        <span class="color-swatch" style="background-color: #FCFBF8;"></span>
-                                        <span class="color-swatch" style="background-color: #566A53;"></span>
-                                        <span class="color-swatch" style="background-color: #D4B996;"></span>
-                                    </div>
-                                    <span class="text-sm">Natürlich & Stabil</span>
-                                </button>
-                                <button class="theme-button w-full flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md" data-theme="klar-fokussiert" data-name="Klar & Fokussiert" title="Klar & Fokussiert: Seriös, modern, zielgerichtet.">
-                                    <div class="flex items-center space-x-1">
-                                        <span class="color-swatch" style="background-color: #F7F9F9;"></span>
-                                        <span class="color-swatch" style="background-color: #2A3F54;"></span>
-                                        <span class="color-swatch" style="background-color: #2E8B9A;"></span>
-                                    </div>
-                                    <span class="text-sm">Klar & Fokussiert</span>
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </nav>
-
-        <!-- Sektion 1: Hero -->
-        <header class="hero-section">
-            <div class="hero-content container mx-auto px-6 text-left">
-                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 text-black">
-                    <span data-i18n="hero.h1.line1">Maßgeschneiderte Software, die Ihr Geschäft voranbringt.</span> <br class="hidden md:block">
-                    <span class="hero-sub-title accent-color" data-i18n="hero.h1.line2">Ein Partner, auf den Sie sich verlassen können.</span>
-                </h1>
-                <p class="text-lg md:text-xl max-w-xl mx-0 mb-8 text-black" data-i18n="hero.p">
-                    Wir kombinieren innovative Technologie mit transparenten Prozessen, um robuste und skalierbare Softwarelösungen zu entwickeln, die exakt auf Ihre Bedürfnisse zugeschnitten sind.
-                </p>
-                <a href="#kontakt" class="bg-accent text-white font-bold py-4 px-10 rounded-lg text-lg cta-button" data-i18n="hero.cta">
-                    Jetzt Erstgespräch vereinbaren
-                </a>
-            </div>
-        </header>
-
-        <main>
-            <!-- Sektion 2: Ihr Projekterfolg, planbar und sicher -->
-            <section id="problem" class="py-20 md:py-32 section-fade-in">
-                <div class="container mx-auto px-6 text-center">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="problem.h2">Ihr Projekterfolg, planbar und sicher.</h2>
-                    <p class="text-lg text-primary-muted max-w-3xl mx-auto mb-16" data-i18n="problem.p">Wir verwandeln die typischen Unsicherheiten der Softwareentwicklung in klare Garantien für Sie.</p>
-                    <div class="grid md:grid-cols-3 gap-8 text-left">
-                        <div class="card-bg p-8 rounded-xl shadow-sm">
-                            <h3 class="text-xl font-bold mb-3" data-i18n="problem.card1.h3">Absolute Budgettreue</h3>
-                            <p class="text-primary-muted" data-i18n="problem.card1.p">Durch detaillierte Planung und transparente Fortschrittsberichte stellen wir sicher, dass Ihr Projekt im vereinbarten Budgetrahmen bleibt. Für Ihre volle Planungssicherheit.</p>
-                        </div>
-                        <div class="card-bg p-8 rounded-xl shadow-sm">
-                            <h3 class="text-xl font-bold mb-3" data-i18n="problem.card2.h3">Zuverlässige Termineinhaltung</h3>
-                            <p class="text-primary-muted" data-i18n="problem.card2.p">Unsere agilen Prozesse und proaktive Kommunikation garantieren, dass wir Meilensteine zuverlässig erreichen. Wir liefern pünktlich, damit Sie sicher planen können.</p>
-                        </div>
-                        <div class="card-bg p-8 rounded-xl shadow-sm">
-                            <h3 class="text-xl font-bold mb-3" data-i18n="problem.card3.h3">Transparente Partnerschaft</h3>
-                            <p class="text-primary-muted" data-i18n="problem.card3.p">Sie haben einen festen Ansprechpartner und erhalten regelmäßige, verständliche Updates. Wir schaffen eine vertrauensvolle Atmosphäre durch proaktive und klare Kommunikation.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Sektion 3: Unsere Lösungen -->
-            <section id="loesungen" class="py-20 md:py-32 section-bg section-fade-in">
-                <div class="container mx-auto px-6">
-                    <div class="text-center mb-16">
-                        <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="solutions.h2">Unsere Expertise für Ihren Erfolg.</h2>
-                        <p class="text-lg text-primary-muted max-w-3xl mx-auto" data-i18n="solutions.p">Wir entwickeln nicht nur Software – wir schaffen digitale Lösungen, die echte Geschäftsergebnisse liefern.</p>
-                    </div>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200/50 transform hover:-translate-y-2 transition-transform duration-300">
-                            <h3 class="text-xl font-bold mb-3" data-i18n="solutions.card1.h3">Individuelle Webanwendungen</h3>
-                            <p class="text-primary-muted" data-i18n="solutions.card1.p">...die Ihre Nutzer begeistern und komplexe Geschäftsprozesse optimieren. Skalierbar, sicher und perfekt auf Ihre Marke zugeschnitten.</p>
-                        </div>
-                        <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200/50 transform hover:-translate-y-2 transition-transform duration-300">
-                            <h3 class="text-xl font-bold mb-3" data-i18n="solutions.card2.h3">Mobile App-Entwicklung</h3>
-                            <p class="text-primary-muted" data-i18n="solutions.card2.p">...die auf iOS und Android überzeugen. Wir begleiten Sie von der Idee bis zum Launch im App Store und darüber hinaus.</p>
-                        </div>
-                        <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200/50 transform hover:-translate-y-2 transition-transform duration-300">
-                            <h3 class="text-xl font-bold mb-3" data-i18n="solutions.card3.h3">Cloud & DevOps</h3>
-                            <p class="text-primary-muted" data-i18n="solutions.card3.p">...für eine robuste und skalierbare Infrastruktur. Wir sorgen dafür, dass Ihre Anwendung zuverlässig läuft und mit Ihrem Erfolg wächst.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Sektion 4: Zwei erfahrene Entwickler. Eine Mission. -->
-            <section id="vertrauen" class="py-20 md:py-32 section-fade-in">
-                <div class="container mx-auto px-6">
-                    <div class="text-center mb-16">
-                        <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="about.h2">Ein erfahrenes Team. Eine Mission.</h2>
-                        <p class="text-lg text-primary-muted max-w-3xl mx-auto" data-i18n="about.p">Wir bündeln unsere langjährige Expertise, um Ihr Projekt mit höchster Qualität und persönlichem Engagement zum Erfolg zu führen.</p>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-8 md:gap-12 max-w-4xl mx-auto">
-                        <div class="card-bg p-8 rounded-xl shadow-sm text-center">
-                            <img src="https://placehold.co/120x120/EAE7DD/2C3E50?text=Foto" alt="Foto von Entwickler 1" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md">
-                            <h3 class="text-2xl font-bold" data-i18n="about.dev1.name">Anne Kaufmann</h3>
-                            <p class="font-semibold accent-color mb-2" data-i18n="about.dev1.role">Networking</p>
-                            <p class="text-primary-muted" data-i18n="about.dev1.desc">to be done</p>
-                        </div>
-                        <div class="card-bg p-8 rounded-xl shadow-sm text-center">
-                            <img src="https://placehold.co/120x120/EAE7DD/2C3E50?text=Foto" alt="Foto von Entwickler 2" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md">
-                            <h3 class="text-2xl font-bold" data-i18n="about.dev2.name">Erika Mustermann</h3>
-                            <p class="font-semibold accent-color mb-2" data-i18n="about.dev2.role">Gründerin & UI/UX-Spezialistin</p>
-                            <p class="text-primary-muted" data-i18n="about.dev2.desc">Meine Leidenschaft ist die Schnittstelle zwischen Mensch und Maschine. Ich sorge dafür, dass Ihre Software nicht nur funktioniert, sondern auch intuitiv bedienbar ist und Ihre Nutzer begeistert.</p>
-                        </div>
-                        <div class="card-bg p-8 rounded-xl shadow-sm text-center">
-                            <img src="https://placehold.co/120x120/EAE7DD/2C3E50?text=Foto" alt="Foto von Entwickler 2" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md">
-                            <h3 class="text-2xl font-bold" data-i18n="about.dev3.name">Erika Mustermann</h3>
-                            <p class="font-semibold accent-color mb-2" data-i18n="about.dev3.role">Gründerin & UI/UX-Spezialistin</p>
-                            <p class="text-primary-muted" data-i18n="about.dev3.desc">Meine Leidenschaft ist die Schnittstelle zwischen Mensch und Maschine. Ich sorge dafür, dass Ihre Software nicht nur funktioniert, sondern auch intuitiv bedienbar ist und Ihre Nutzer begeistert.</p>
-                        </div>
-                        <div class="card-bg p-8 rounded-xl shadow-sm text-center">
-                            <img src="https://placehold.co/120x120/EAE7DD/2C3E50?text=Foto" alt="Foto von Entwickler 2" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md">
-                            <h3 class="text-2xl font-bold" data-i18n="about.dev4.name">Erika Mustermann</h3>
-                            <p class="font-semibold accent-color mb-2" data-i18n="about.dev4.role">Gründerin & UI/UX-Spezialistin</p>
-                            <p class="text-primary-muted" data-i18n="about.dev4.desc">Meine Leidenschaft ist die Schnittstelle zwischen Mensch und Maschine. Ich sorge dafür, dass Ihre Software nicht nur funktioniert, sondern auch intuitiv bedienbar ist und Ihre Nutzer begeistert.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Sektion 5: Unser Prozess -->
-            <section id="prozess" class="py-20 md:py-32 section-bg section-fade-in">
-                <div class="container mx-auto px-6">
-                    <div class="text-center mb-16">
-                        <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="process.h2">Ein klarer Weg von der Idee zum fertigen Produkt.</h2>
-                        <p class="text-lg text-primary-muted max-w-3xl mx-auto" data-i18n="process.p">Unser bewährter Prozess sorgt für Transparenz und Planbarkeit in jeder Phase Ihres Projekts.</p>
-                    </div>
-                    <div class="relative">
-                        <div class="hidden md:block absolute top-5 left-1/2 w-0.5 h-full bg-gray-300/70 -translate-x-1/2"></div>
-                        <div class="md:hidden absolute top-0 left-5 w-0.5 h-full bg-gray-300/70"></div>
-                        <div class="space-y-12 md:space-y-0 pl-10 md:pl-0">
-                            <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative"><div class="md:text-right md:pr-8"><div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2 md:ml-auto">1</div><h3 class="text-xl font-bold" data-i18n="process.step1.h3">Discovery & Strategie</h3><p class="text-primary-muted" data-i18n="process.step1.p">Wir tauchen tief in Ihr Geschäftsmodell ein, um Ihre Ziele und Herausforderungen vollständig zu verstehen.</p></div><div class="hidden md:block"></div></div>
-                            <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative"><div class="hidden md:block"></div><div class="md:pl-8"><div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2">2</div><h3 class="text-xl font-bold" data-i18n="process.step2.h3">Design & Prototyping</h3><p class="text-primary-muted" data-i18n="process.step2.p">Wir erstellen intuitive User Interfaces und interaktive Prototypen, damit Sie die Software erleben können, bevor eine Zeile Code geschrieben wird.</p></div></div>
-                            <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative"><div class="md:text-right md:pr-8"><div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2 md:ml-auto">3</div><h3 class="text-xl font-bold" data-i18n="process.step3.h3">Agile Entwicklung</h3><p class="text-primary-muted" data-i18n="process.step3.p">In zweiwöchigen Sprints entwickeln wir Ihre Software. Regelmäßige Demos halten Sie immer auf dem neuesten Stand.</p></div></div>
-                            <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative"><div class="hidden md:block"></div><div class="md:pl-8"><div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2">4</div><h3 class="text-xl font-bold" data-i18n="process.step4.h3">Testing & Launch</h3><p class="text-primary-muted" data-i18n="process.step4.p">Umfassende Qualitätssicherung stellt sicher, dass Ihr Produkt fehlerfrei ist. Wir begleiten den Launch und sorgen für einen reibungslosen Start.</p></div></div>
-                            <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative"><div class="md:text-right md:pr-8"><div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2 md:ml-auto">5</div><h3 class="text-xl font-bold" data-i18n="process.step5.h3">Support & Skalierung</h3><p class="text-primary-muted" data-i18n="process.step5.p">Auch nach dem Launch sind wir für Sie da. Wir warten die Software, unterstützen Ihre Nutzer und entwickeln sie strategisch weiter.</p></div></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Sektion 6: Finaler CTA -->
-            <section id="kontakt" class="py-20 md:py-32 section-fade-in">
-                <div class="container mx-auto px-6 text-center">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="contact.h2">Sind Sie bereit, Ihr Projekt auf eine solide Basis zu stellen?</h2>
-                    <p class="text-lg text-primary-muted max-w-2xl mx-auto mb-8" data-i18n="contact.p">Lassen Sie uns in einem unverbindlichen Gespräch herausfinden, wie wir Sie unterstützen können. Wir freuen uns darauf, von Ihrer Idee zu hören.</p>
-                    <a href="mailto:info@englberger-it.de" class="bg-accent text-white font-bold py-4 px-10 rounded-lg text-lg mx-auto cta-button" data-i18n="contact.cta">
-                        Lassen Sie uns über Ihr Projekt sprechen
+            </nav>
+            <!-- Sektion 1: Hero -->
+            <header class="hero-section">
+                <div class="hero-content container mx-auto px-6 text-left">
+                    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 text-black">
+                        <span data-i18n="hero.h1.line1">Maßgeschneiderte Software, die Ihr Geschäft voranbringt.</span>
+                        <br class="hidden md:block">
+                        <span class="hero-sub-title accent-color" data-i18n="hero.h1.line2">Logispher, ein Partner, auf den Sie sich verlassen können.</span>
+                    </h1>
+                    <p class="text-lg md:text-xl max-w-xl mx-0 mb-8 text-black" data-i18n="hero.p">
+                        Wir kombinieren innovative Technologie mit transparenten Prozessen, um robuste und skalierbare Softwarelösungen zu entwickeln, die exakt auf Ihre Bedürfnisse zugeschnitten sind.
+                    </p>
+                    <a href="#kontakt" class="bg-accent text-white font-bold py-4 px-10 rounded-lg text-lg cta-button" data-i18n="hero.cta">
+                        Jetzt Erstgespräch vereinbaren
                     </a>
                 </div>
-            </section>
-        </main>
-
-        <!-- Impressum Section -->
-        <section id="impressum" class="py-16 md:py-24 section-bg">
-            <div class="container mx-auto px-6">
-                <div class="max-w-4xl mx-auto">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center">Impressum</h2>
-
-                    <div class="card-bg p-8 rounded-xl shadow-sm">
-                        <h3 class="text-xl font-bold mb-4">Angaben gemäß § 5 TMG</h3>
-                        <p class="mb-4">Florian Englberger<br>
-                        Englberger IT<br>
-                        Herbstraße 18<br>
-                        86830 Schwabmünchen</p>
-
-                        <h3 class="text-xl font-bold mb-4 mt-8">Kontakt</h3>
-                        <p class="mb-4">
-                            Telefon: 01722454515<br>
-                            E-Mail: info@englberger-it.de
-                        </p>
-
-                        <h3 class="text-xl font-bold mb-4 mt-8">Umsatzsteuer-ID</h3>
-                        <p class="mb-4">
-                            Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:<br>
-                            DE346110443
-                        </p>
-
-                        <h3 class="text-xl font-bold mb-4 mt-8">Berufsbezeichnung und berufsrechtliche Regelungen</h3>
-                        <p class="mb-4">
-                            Berufsbezeichnung: Selbstständiger IT-Berater<br>
-                            Zuständige Kammer: IHK für München und Oberbayern<br>
-                            Es gelten folgende berufsrechtliche Regelungen: Gewerbeordnung
-                        </p>
-
-                        <h3 class="text-xl font-bold mb-4 mt-8">Streitschlichtung</h3>
-                        <p class="mb-4">
-                            Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: 
-                            <a href="https://ec.europa.eu/consumers/odr/" target="_blank" class="text-accent hover:underline">https://ec.europa.eu/consumers/odr/</a>.<br>
-                            Unsere E-Mail-Adresse finden Sie oben im Impressum.
-                        </p>
-                        <p class="mb-4">
-                            Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
-                        </p>
-
-                        <h3 class="text-xl font-bold mb-4 mt-8">Haftung für Inhalte</h3>
-                        <p class="mb-4">
-                            Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. 
-                            Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu 
-                            überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
-                        </p>
-                        <p class="mb-4">
-                            Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. 
-                            Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. 
-                            Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.
-                        </p>
-
-                        <h3 class="text-xl font-bold mb-4 mt-8">Haftung für Links</h3>
-                        <p class="mb-4">
-                            Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. 
-                            Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten 
-                            ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum 
-                            Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar.
-                        </p>
-                        <p class="mb-4">
-                            Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. 
-                            Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.
-                        </p>
-
-                        <h3 class="text-xl font-bold mb-4 mt-8">Urheberrecht</h3>
-                        <p class="mb-4">
-                            Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. 
-                            Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes 
-                            bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, 
-                            nicht kommerziellen Gebrauch gestattet.
-                        </p>
-                        <p class="mb-4">
-                            Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. 
-                            Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, 
-                            bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.
-                        </p>
+            </header>
+            <main>
+                <!-- Sektion 2: Ihr Projekterfolg, planbar und sicher -->
+                <section id="problem" class="py-20 md:py-32 section-fade-in">
+                    <div class="container mx-auto px-6 text-center">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="problem.h2">Ihr Projekterfolg, planbar und sicher.</h2>
+                        <p class="text-lg text-primary-muted max-w-3xl mx-auto mb-16" data-i18n="problem.p">Wir verwandeln die typischen Unsicherheiten der Softwareentwicklung in klare Garantien für Sie.</p>
+                        <div class="grid md:grid-cols-3 gap-8 text-left">
+                            <div class="card-bg p-8 rounded-xl shadow-sm">
+                                <h3 class="text-xl font-bold mb-3" data-i18n="problem.card1.h3">Absolute Budgettreue</h3>
+                                <p class="text-primary-muted" data-i18n="problem.card1.p">Durch detaillierte Planung und transparente Fortschrittsberichte stellen wir sicher, dass Ihr Projekt im vereinbarten Budgetrahmen bleibt. Für Ihre volle Planungssicherheit.</p>
+                            </div>
+                            <div class="card-bg p-8 rounded-xl shadow-sm">
+                                <h3 class="text-xl font-bold mb-3" data-i18n="problem.card2.h3">Zuverlässige Termineinhaltung</h3>
+                                <p class="text-primary-muted" data-i18n="problem.card2.p">Unsere agilen Prozesse und proaktive Kommunikation garantieren, dass wir Meilensteine zuverlässig erreichen. Wir liefern pünktlich, damit Sie sicher planen können.</p>
+                            </div>
+                            <div class="card-bg p-8 rounded-xl shadow-sm">
+                                <h3 class="text-xl font-bold mb-3" data-i18n="problem.card3.h3">Transparente Partnerschaft</h3>
+                                <p class="text-primary-muted" data-i18n="problem.card3.p">Sie haben einen festen Ansprechpartner und erhalten regelmäßige, verständliche Updates. Wir schaffen eine vertrauensvolle Atmosphäre durch proaktive und klare Kommunikation.</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </section>
+                <!-- Sektion 3: Unsere Lösungen -->
+                <section id="loesungen" class="py-20 md:py-32 section-bg section-fade-in">
+                    <div class="container mx-auto px-6">
+                        <div class="text-center mb-16">
+                            <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="solutions.h2">Unsere Expertise für Ihren Erfolg.</h2>
+                            <p class="text-lg text-primary-muted max-w-3xl mx-auto" data-i18n="solutions.p">Wir entwickeln nicht nur Software – wir schaffen digitale Lösungen, die echte Geschäftsergebnisse liefern.</p>
+                        </div>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200/50 transform hover:-translate-y-2 transition-transform duration-300">
+                                <h3 class="text-xl font-bold mb-3" data-i18n="solutions.card1.h3">Individuelle Webanwendungen</h3>
+                                <p class="text-primary-muted" data-i18n="solutions.card1.p">...die Ihre Nutzer begeistern und komplexe Geschäftsprozesse optimieren. Skalierbar, sicher und perfekt auf Ihre Marke zugeschnitten.</p>
+                            </div>
+                            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200/50 transform hover:-translate-y-2 transition-transform duration-300">
+                                <h3 class="text-xl font-bold mb-3" data-i18n="solutions.card2.h3">Mobile App-Entwicklung</h3>
+                                <p class="text-primary-muted" data-i18n="solutions.card2.p">...die auf iOS und Android überzeugen. Wir begleiten Sie von der Idee bis zum Launch im App Store und darüber hinaus.</p>
+                            </div>
+                            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200/50 transform hover:-translate-y-2 transition-transform duration-300">
+                                <h3 class="text-xl font-bold mb-3" data-i18n="solutions.card3.h3">Cloud & DevOps</h3>
+                                <p class="text-primary-muted" data-i18n="solutions.card3.p">...für eine robuste und skalierbare Infrastruktur. Wir sorgen dafür, dass Ihre Anwendung zuverlässig läuft und mit Ihrem Erfolg wächst.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Sektion 4: Zwei erfahrene Entwickler. Eine Mission. -->
+                <section id="vertrauen" class="py-20 md:py-32 section-fade-in">
+                    <div class="container mx-auto px-6">
+                        <div class="text-center mb-16">
+                            <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="about.h2">Ein erfahrenes Team. Eine Mission.</h2>
+                            <p class="text-lg text-primary-muted max-w-3xl mx-auto" data-i18n="about.p">Wir bündeln unsere langjährige Expertise, um Ihr Projekt mit höchster Qualität und persönlichem Engagement zum Erfolg zu führen.</p>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-8 md:gap-12 max-w-4xl mx-auto">
+                            <div class="card-bg p-8 rounded-xl shadow-sm text-center">
+                                <img src="assets/male_avatar.png" alt="Foto von Florain Englberger" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md">
+                                <h3 class="text-2xl font-bold" data-i18n="about.dev3.name">Florain Englberger</h3>
+                                <p class="font-semibold accent-color mb-2" data-i18n="about.dev3.role">Gründerin & UI/UX-Spezialistin</p>
+                                <p class="text-primary-muted" data-i18n="about.dev3.desc">Meine Leidenschaft ist die Schnittstelle zwischen Mensch und Maschine. Ich sorge dafür, dass Ihre Software nicht nur funktioniert, sondern auch intuitiv bedienbar ist und Ihre Nutzer begeistert.</p>
+                            </div>
+                            <div class="card-bg p-8 rounded-xl shadow-sm text-center">
+                                <img src="assets/male_avatar.png" alt="Foto von Matthias Tritt" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md">
+                                <h3 class="text-2xl font-bold" data-i18n="about.dev4.name">Matthias Tritt</h3>
+                                <p class="font-semibold accent-color mb-2" data-i18n="about.dev4.role">Gründerin & UI/UX-Spezialistin</p>
+                                <p class="text-primary-muted" data-i18n="about.dev4.desc">Meine Leidenschaft ist die Schnittstelle zwischen Mensch und Maschine. Ich sorge dafür, dass Ihre Software nicht nur funktioniert, sondern auch intuitiv bedienbar ist und Ihre Nutzer begeistert.</p>
+                            </div>
+                            <div class="card-bg p-8 rounded-xl shadow-sm text-center">
+                                <img src="assets/female_avatar.png" alt="Foto von Anne Kaufmann" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md">
+                                <h3 class="text-2xl font-bold" data-i18n="about.dev1.name">Anne Kaufmann</h3>
+                                <p class="font-semibold accent-color mb-2" data-i18n="about.dev1.role">Networking</p>
+                                <p class="text-primary-muted" data-i18n="about.dev1.desc">to be done</p>
+                            </div>
+                            <div class="card-bg p-8 rounded-xl shadow-sm text-center">
+                                <img src="assets/male_avatar.png" alt="Foto von Daniel Erbe" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md">
+                                <h3 class="text-2xl font-bold" data-i18n="about.dev2.name">Daniel Erbe</h3>
+                                <p class="font-semibold accent-color mb-2" data-i18n="about.dev2.role">Gründerin & UI/UX-Spezialistin</p>
+                                <p class="text-primary-muted" data-i18n="about.dev2.desc">Meine Leidenschaft ist die Schnittstelle zwischen Mensch und Maschine. Ich sorge dafür, dass Ihre Software nicht nur funktioniert, sondern auch intuitiv bedienbar ist und Ihre Nutzer begeistert.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Sektion 5: Unser Prozess -->
+                <section id="prozess" class="py-20 md:py-32 section-bg section-fade-in">
+                    <div class="container mx-auto px-6">
+                        <div class="text-center mb-16">
+                            <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="process.h2">Ein klarer Weg von der Idee zum fertigen Produkt.</h2>
+                            <p class="text-lg text-primary-muted max-w-3xl mx-auto" data-i18n="process.p">Unser bewährter Prozess sorgt für Transparenz und Planbarkeit in jeder Phase Ihres Projekts.</p>
+                        </div>
+                        <div class="relative">
+                            <div class="hidden md:block absolute top-5 left-1/2 w-0.5 h-full bg-gray-300/70 -translate-x-1/2"></div>
+                            <div class="md:hidden absolute top-0 left-5 w-0.5 h-full bg-gray-300/70"></div>
+                            <div class="space-y-12 md:space-y-0 pl-10 md:pl-0">
+                                <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative">
+                                    <div class="md:text-right md:pr-8">
+                                        <div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2 md:ml-auto">1</div>
+                                        <h3 class="text-xl font-bold" data-i18n="process.step1.h3">Discovery & Strategie</h3>
+                                        <p class="text-primary-muted" data-i18n="process.step1.p">Wir tauchen tief in Ihr Geschäftsmodell ein, um Ihre Ziele und Herausforderungen vollständig zu verstehen.</p>
+                                    </div>
+                                    <div class="hidden md:block"></div>
+                                </div>
+                                <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative">
+                                    <div class="hidden md:block"></div>
+                                    <div class="md:pl-8">
+                                        <div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2">2</div>
+                                        <h3 class="text-xl font-bold" data-i18n="process.step2.h3">Design & Prototyping</h3>
+                                        <p class="text-primary-muted" data-i18n="process.step2.p">Wir erstellen intuitive User Interfaces und interaktive Prototypen, damit Sie die Software erleben können, bevor eine Zeile Code geschrieben wird.</p>
+                                    </div>
+                                </div>
+                                <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative">
+                                    <div class="md:text-right md:pr-8">
+                                        <div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2 md:ml-auto">3</div>
+                                        <h3 class="text-xl font-bold" data-i18n="process.step3.h3">Agile Entwicklung</h3>
+                                        <p class="text-primary-muted" data-i18n="process.step3.p">In zweiwöchigen Sprints entwickeln wir Ihre Software. Regelmäßige Demos halten Sie immer auf dem neuesten Stand.</p>
+                                    </div>
+                                </div>
+                                <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative">
+                                    <div class="hidden md:block"></div>
+                                    <div class="md:pl-8">
+                                        <div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2">4</div>
+                                        <h3 class="text-xl font-bold" data-i18n="process.step4.h3">Testing & Launch</h3>
+                                        <p class="text-primary-muted" data-i18n="process.step4.p">Umfassende Qualitätssicherung stellt sicher, dass Ihr Produkt fehlerfrei ist. Wir begleiten den Launch und sorgen für einen reibungslosen Start.</p>
+                                    </div>
+                                </div>
+                                <div class="md:grid md:grid-cols-2 md:gap-8 items-center relative">
+                                    <div class="md:text-right md:pr-8">
+                                        <div class="bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2 md:ml-auto">5</div>
+                                        <h3 class="text-xl font-bold" data-i18n="process.step5.h3">Support & Skalierung</h3>
+                                        <p class="text-primary-muted" data-i18n="process.step5.p">Auch nach dem Launch sind wir für Sie da. Wir warten die Software, unterstützen Ihre Nutzer und entwickeln sie strategisch weiter.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Sektion 6: Finaler CTA -->
+                <section id="kontakt" class="py-20 md:py-32 section-fade-in">
+                    <div class="container mx-auto px-6 text-center">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="contact.h2">Sind Sie bereit, Ihr Projekt auf eine solide Basis zu stellen?</h2>
+                        <p class="text-lg text-primary-muted max-w-2xl mx-auto mb-8" data-i18n="contact.p">Lassen Sie uns in einem unverbindlichen Gespräch herausfinden, wie wir Sie unterstützen können. Wir freuen uns darauf, von Ihrer Idee zu hören.</p>
+                        <a href="mailto:info@englberger-it.de" class="bg-accent text-white font-bold py-4 px-10 rounded-lg text-lg mx-auto cta-button" data-i18n="contact.cta">
+                            Lassen Sie uns über Ihr Projekt sprechen
+                        </a>
+                    </div>
+                </section>
+            </main>
+            <section id="impressum" class="md:pt-32 section-fade-in visible pb-4">
+                <div class="mx-auto">
+                    <div class="mx-auto">
+                        <details open class="p-8 shadow-sm">
+                            <summary class="cursor-pointer flex items-center justify-between list-none">
+                                <h2 class="text-3xl md:text-4xl font-bold text-center">Impressum</h2>
+                                <!-- eigenes Icon -->
+                                <svg
+                                    class="w-8 h-8 transition-transform duration-300 group-open:rotate-180"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </summary>
+                            <div class="mt-8">
+                                <h3 class="text-xl font-bold mb-4">Angaben gemäß § 5 TMG</h3>
+                                <p class="mb-4">
+                                    Florian Englberger
+                                    <br>
+                                    Englberger IT
+                                    <br>
+                                    Herbstraße 18
+                                    <br>
+                                    86830 Schwabmünchen
+                                </p>
+                                <h3 class="text-xl font-bold mb-4 mt-8">Kontakt</h3>
+                                <p class="mb-4">
+                                    Telefon: 01722454515
+                                    <br>
+                                    E-Mail: info@englberger-it.de
+                                </p>
+                                <h3 class="text-xl font-bold mb-4 mt-8">Umsatzsteuer-ID</h3>
+                                <p class="mb-4">
+                                    Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:
+                                    <br>
+                                    DE346110443
+                                </p>
+                                <h3 class="text-xl font-bold mb-4 mt-8">Berufsbezeichnung und berufsrechtliche Regelungen</h3>
+                                <p class="mb-4">
+                                    Berufsbezeichnung: Selbstständiger IT-Berater
+                                    <br>
+                                    Zuständige Kammer: IHK für München und Oberbayern
+                                    <br>
+                                    Es gelten folgende berufsrechtliche Regelungen: Gewerbeordnung
+                                </p>
+                                <h3 class="text-xl font-bold mb-4 mt-8">Streitschlichtung</h3>
+                                <p class="mb-4">
+                                    Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:
+                                    <a href="https://ec.europa.eu/consumers/odr/" target="_blank" class="text-accent hover:underline">https://ec.europa.eu/consumers/odr/</a>
+                                    .
+                                    <br>
+                                    Unsere E-Mail-Adresse finden Sie oben im Impressum.
+                                </p>
+                                <p class="mb-4">
+                                    Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+                                </p>
+                                <h3 class="text-xl font-bold mb-4 mt-8">Haftung für Inhalte</h3>
+                                <p class="mb-4">
+                                    Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.
+                            Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu
+                            überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
+                                </p>
+                                <p class="mb-4">
+                                    Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt.
+                            Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich.
+                            Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.
+                                </p>
+                                <h3 class="text-xl font-bold mb-4 mt-8">Haftung für Links</h3>
+                                <p class="mb-4">
+                                    Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben.
+                            Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten
+                            ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum
+                            Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar.
+                                </p>
+                                <p class="mb-4">
+                                    Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar.
+                            Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.
+                                </p>
+                                <h3 class="text-xl font-bold mb-4 mt-8">Urheberrecht</h3>
+                                <p class="mb-4">
+                                    Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht.
+                            Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes
+                            bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten,
+                            nicht kommerziellen Gebrauch gestattet.
+                                </p>
+                                <p class="mb-4">
+                                    Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet.
+                            Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden,
+                            bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.
+                                </p>
+                            </details>
+                        </div>
+                    </div>
+                </section>
             </div>
-        </section>
-
-        <footer class="bg-primary text-white">
-            <div class="container mx-auto px-6 py-8 text-center text-sm">
-                <p data-i18n="footer.copyright">&copy; 2024 Ihre Firma GmbH. Alle Rechte vorbehalten.</p>
-                <nav class="flex justify-center space-x-4 mt-4">
-                    <a href="#impressum" class="hover:underline" data-i18n="footer.imprint">Impressum</a>
-                    <a href="#" class="hover:underline" data-i18n="footer.privacy">Datenschutz</a>
-                </nav>
-            </div>
-        </footer>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-
-    <script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+            <script>
         document.addEventListener('DOMContentLoaded', () => {
             // --- 3D Scene Setup ---
             const scene = new THREE.Scene();
@@ -909,10 +995,10 @@
             const translations = {
                 de: {
                     "title": "Ihre erfahrenen Partner für maßgeschneiderte Softwareentwicklung",
-                    "nav.agency": "Ihre Agentur",
+                    "nav.agency": "LOGISPHER",
                     "nav.theme": "Theme wählen:",
                     "hero.h1.line1": "Maßgeschneiderte Software, die Ihr Geschäft voranbringt.",
-                    "hero.h1.line2": "Ein Partner, auf den Sie sich verlassen können.",
+                    "hero.h1.line2": "Logispher... ein Partner der für Verlässlichkeit steht.",
                     "hero.p": "Wir kombinieren innovative Technologie mit transparenten Prozessen, um robuste und skalierbare Softwarelösungen zu entwickeln, die exakt auf Ihre Bedürfnisse zugeschnitten sind.",
                     "hero.cta": "Jetzt Erstgespräch vereinbaren",
                     "problem.h2": "Ihr Projekterfolg, planbar und sicher.",
@@ -966,10 +1052,10 @@
                 },
                 en: {
                     "title": "Your Experienced Partners for Custom Software Development",
-                    "nav.agency": "Your Agency",
+                    "nav.agency": "LOGISPHER",
                     "nav.theme": "Select Theme:",
                     "hero.h1.line1": "Custom software that drives your business forward.",
-                    "hero.h1.line2": "A partner you can rely on.",
+                    "hero.h1.line2": "Logispher, A partner you can rely on.",
                     "hero.p": "We combine innovative technology with transparent processes to develop robust and scalable software solutions tailored exactly to your needs.",
                     "hero.cta": "Schedule a Consultation",
                     "problem.h2": "Your Project's Success, Plannable and Secure.",
@@ -1042,7 +1128,6 @@
             // Set initial language
             setLanguage('de');
         });
-    </script>
-
-</body>
-</html>
+            </script>
+        </body>
+    </html>
